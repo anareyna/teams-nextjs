@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import QuestionList from "../QuestionList/QuestionList";
 
 export default function RandomQuestion({ questions }: { questions: string[] }) {
 	const [numberDisplayQuestions, setNumberDisplayQuestions] = useState(3);
@@ -43,16 +44,7 @@ export default function RandomQuestion({ questions }: { questions: string[] }) {
 				</div>
 				{numberDisplayQuestions > 0 && (
 					<>
-						<ul className="flex flex-col gap-10">
-							{currentQuestions.map((question, index) => (
-								<li
-									key={index}
-									className="text-3xl border-l-8 border-blue-500 pl-8 py-3 rounded font-semibold"
-								>
-									{question}
-								</li>
-							))}
-						</ul>
+						<QuestionList questions={currentQuestions} />
 
 						<button
 							className="mt-12 px-8 py-4 bg-blue-500 text-white rounded-lg text-xl font-semibold"
