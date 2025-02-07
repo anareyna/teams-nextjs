@@ -1,14 +1,16 @@
 import QuestionList from "@/components/QuestionList/QuestionList";
+import { Question } from "@/types/types";
 import { notFound } from "next/navigation";
 import questions from "../../../../data/questions.json";
 
 export default async function Page({ params }: { params: { ids: string[] } }) {
 	const { ids } = await params;
 	const numericIds = ids.map((id) => parseInt(id, 10));
+	console.log("numericIds", numericIds);
 
 	const filteredQuestions = numericIds
-		.map((id) => questions[id])
-		.filter((question) => question);
+		.map((id) => questions.find((question) => question.id === id))
+		.filter(Boolean) as Question[];
 
 	if (filteredQuestions.length === 0) {
 		return notFound();
