@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import RandomQuestion from "./RandomQuestion";
 
 const mockQuestions = [
-	"What's your name",
-	"How old are you",
-	"What's your favorite animal",
-	"Where are you from",
-	"Who is your favorite author",
+	{ id: 1, question: "What's your name" },
+	{ id: 2, question: "How old are you" },
+	{ id: 3, question: "What's your favorite animal" },
+	{ id: 4, question: "Where are you from" },
+	{ id: 5, question: "Who is your favorite author" },
 ];
 
 describe("RandomQuestion component", () => {

@@ -1,14 +1,19 @@
 "use client";
 
+import { Question } from "@/types/types";
 import { useCallback, useEffect, useState } from "react";
 import QuestionList from "../QuestionList/QuestionList";
 
-export default function RandomQuestion({ questions }: { questions: string[] }) {
+export default function RandomQuestion({
+	questions,
+}: {
+	questions: Question[];
+}) {
 	const [numberDisplayQuestions, setNumberDisplayQuestions] = useState(3);
-	const [currentQuestions, setCurrentQuestions] = useState<string[]>([]);
+	const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
 
 	const getRandomQuestions = useCallback(
-		(count: number): string[] => {
+		(count: number): Question[] => {
 			const randomized = [...questions].sort(() => Math.random() - 0.5);
 			return randomized.slice(0, count);
 		},
