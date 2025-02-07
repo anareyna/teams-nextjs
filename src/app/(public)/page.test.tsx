@@ -5,9 +5,9 @@ import { afterAll, afterEach, beforeAll, expect, it } from "vitest";
 import Home from "./page";
 
 const mockQuestions = [
-	"What's your name",
-	"How old are you",
-	"What's your favorite animal",
+	{ id: 1, question: "What's your name" },
+	{ id: 2, question: "How old are you" },
+	{ id: 3, question: "What's your favorite animal" },
 ];
 
 const handlers = [
@@ -27,9 +27,9 @@ it("renders the page with fetched questions", async () => {
 		render(await Home());
 	});
 
-	expect(screen.getByText(mockQuestions[0])).toBeInTheDocument();
-	expect(screen.getByText(mockQuestions[1])).toBeInTheDocument();
-	expect(screen.getByText(mockQuestions[2])).toBeInTheDocument();
+	expect(screen.getByText(mockQuestions[0].question)).toBeInTheDocument();
+	expect(screen.getByText(mockQuestions[1].question)).toBeInTheDocument();
+	expect(screen.getByText(mockQuestions[2].question)).toBeInTheDocument();
 });
 
 it("handles API errors gracefully", async () => {
