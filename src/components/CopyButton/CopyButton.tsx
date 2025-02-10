@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function CopyButton({ text }: { text: string }) {
 	const [isCopied, setIsCopied] = useState(false);
@@ -13,6 +14,6 @@ export default function CopyButton({ text }: { text: string }) {
 		}
 	}
 	return (
-		<button onClick={handleCopy}>{isCopied ? "Copied!" : "Copy"}</button>
+		<Button onClick={handleCopy}>{isCopied ? "Copied!" : "Copy"}</Button>
 	);
 }

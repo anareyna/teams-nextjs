@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+import Navbar from "@/components/Navbar/Navbar";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -23,13 +26,21 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" className="dark">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-indigo-900 bg-[url('/asfalt-light.png')] bg-repeat`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-indigo-900 bg-[url('/asfalt-light.png')] bg-repeat`}
 			>
-				<div className="max-w-5xl mx-auto flex flex-col items-center justify-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-					{children}
-				</div>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<Navbar />
+					<div className="max-w-5xl mx-auto flex flex-col items-center justify-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+						{children}
+					</div>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

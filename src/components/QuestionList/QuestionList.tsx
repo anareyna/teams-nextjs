@@ -1,21 +1,23 @@
 import { Question } from "@/types/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 export default function QuestionList({ questions }: { questions: Question[] }) {
 	return (
-		<ul className="flex flex-col gap-8">
+		<div className="flex flex-col gap-8">
 			{questions.map((q, i) => (
-				<li
-					key={q.id}
-					className="px-6 py-4 sm:px-10 sm:py-8 rounded bg-white shadow-sm"
-				>
-					<p className="uppercase text-sm sm:text-base tracking-wide text-gray-400 font-bold">
-						Question {i + 1}
-					</p>
-					<p className="font-semibold text-gray-600 tracking-tight text-xl sm:text-2xl">
-						{q.question}
-					</p>
-				</li>
+				<Card key={q.id} role="listitem">
+					<CardHeader className="pb-2">
+						<CardTitle className="uppercase text-gray-400 font-bold">
+							Question {i + 1}
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<p className="font-semibold tracking-tight text-xl sm:text-2xl">
+							{q.question}
+						</p>
+					</CardContent>
+				</Card>
 			))}
-		</ul>
+		</div>
 	);
 }

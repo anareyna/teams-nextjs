@@ -1,9 +1,11 @@
 "use client";
 
 import { Question } from "@/types/types";
+import { Share, Shuffle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import CopyButton from "../CopyButton/CopyButton";
 import QuestionList from "../QuestionList/QuestionList";
+import { Button } from "../ui/button";
 
 export default function RandomQuestion({
 	questions,
@@ -57,22 +59,22 @@ export default function RandomQuestion({
 			<>
 				<div className="flex gap-4 mb-6">
 					{numberDisplayQuestions > 1 ? "Choose from" : "Answer"}
-					<button
+					<Button
 						onClick={() =>
 							setNumberDisplayQuestions((prev) => prev - 1)
 						}
 						disabled={numberDisplayQuestions === 1}
 					>
 						-
-					</button>
+					</Button>
 					{numberDisplayQuestions}
-					<button
+					<Button
 						onClick={() =>
 							setNumberDisplayQuestions((prev) => prev + 1)
 						}
 					>
 						+
-					</button>
+					</Button>
 					{numberDisplayQuestions > 1 ? "questions" : "question"}
 				</div>
 				{numberDisplayQuestions > 0 && (
@@ -89,11 +91,11 @@ export default function RandomQuestion({
 									ready!
 								</p>
 								<div className="flex gap-4">
-									<pre className="bg-indigo-100 px-4 py-2 rounded-s-md select-all break-all">
+									<pre className="bg-indigo-100 px-4 py-2 rounded-md select-all break-all">
 										<a
 											href={shareUrl}
 											target="_blank"
-											className="text-slate-700 text-indigo-700 hover:underline font-semibold text-wrap"
+											className="text-indigo-700 hover:underline font-semibold text-wrap"
 										>
 											{shareUrl}
 										</a>
@@ -103,23 +105,25 @@ export default function RandomQuestion({
 							</div>
 						)}
 
-						<div className="flex gap-8">
-							<button
-								className="mt-12 px-8 py-4 bg-blue-500 text-white rounded-lg text-xl font-semibold"
+						<div className="flex gap-6 mt-10">
+							<Button
 								onClick={handleNewQuestionsButton}
+								size="lg"
 							>
+								<Shuffle />
 								{numberDisplayQuestions > 1
 									? "Get New Questions"
 									: "Get Another Question"}
-							</button>
+							</Button>
 
 							{showShareButton && (
-								<button
-									className="mt-12 px-8 py-4 bg-blue-500 text-white rounded-lg text-xl font-semibold"
+								<Button
 									onClick={handleShareButton}
+									variant="secondary"
 								>
+									<Share />
 									Share this list
-								</button>
+								</Button>
 							)}
 						</div>
 					</>
