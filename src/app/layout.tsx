@@ -25,9 +25,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-indigo-900 bg-[url('/asfalt-light.png')] bg-repeat"`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-indigo-900 bg-[url('/asfalt-light.png')] bg-repeat`}
 			>
-				<div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+				<div className="max-w-5xl mx-auto flex flex-col items-center justify-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
 					{children}
 				</div>
 			</body>
