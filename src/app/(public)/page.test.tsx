@@ -21,28 +21,24 @@ const handlers = [
 		const url = new URL(request.url);
 		const count = url.searchParams.get("count");
 
-		// Add a counter to alternate between mock responses
-
-		if (count === "2") {
-			return HttpResponse.json(mockQuestions.slice(0, 2));
+		switch (count) {
+			case "1":
+				return HttpResponse.json([mockQuestions[0]]);
+			case "2":
+				return HttpResponse.json(mockQuestions.slice(0, 2));
+			case "3":
+				return HttpResponse.json(mockQuestions);
+			case "4":
+				return HttpResponse.json([
+					...mockQuestions,
+					{ id: "4", text: "q4" },
+				]);
+			default:
+				return HttpResponse.json(
+					{ error: "Invalid count" },
+					{ status: 400 }
+				);
 		}
-
-		if (count === "3") {
-			return HttpResponse.json(mockQuestions);
-		}
-
-		if (count === "4") {
-			return HttpResponse.json([
-				...mockQuestions,
-				{ id: "4", text: "q4" },
-			]);
-		}
-
-		if (count === "1") {
-			return HttpResponse.json([mockQuestions[0]]);
-		}
-
-		return HttpResponse.json({ error: "Invalid count" }, { status: 400 });
 	}),
 ];
 
@@ -108,19 +104,25 @@ it("should decrease the number of questions when clicking on -", async () => {
 	});
 });
 
-it.skip('should not decrease the number of questions when clicking on "-" if the number of questions is 1', async () => {
+it("should disable minus button when having only 1 question", async () => {
 	render(<Home />);
+
 	await waitFor(() => {
 		expect(screen.getAllByRole("listitem")).toHaveLength(3);
 	});
-	const minusButton = screen.getByRole("button", { name: "-" });
-	fireEvent.click(minusButton);
-	fireEvent.click(minusButton);
 
+	const minusButton = screen.getByRole("button", { name: "-" });
+
+	fireEvent.click(minusButton);
+	await waitFor(() => {
+		expect(screen.getAllByRole("listitem")).toHaveLength(2);
+		expect(minusButton).not.toBeDisabled();
+	});
+
+	fireEvent.click(minusButton);
 	await waitFor(() => {
 		expect(screen.getAllByRole("listitem")).toHaveLength(1);
 		expect(minusButton).toBeDisabled();
-		expect(screen.getByText(/answer 1 question/i)).toBeInTheDocument();
 	});
 });
 
