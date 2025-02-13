@@ -69,7 +69,7 @@ export default function Home() {
 	};
 
 	const handleDecreaseQuestionsClick = () => {
-		setNumberDisplayQuestions((prev) => prev - 1);
+		setNumberDisplayQuestions((prev) => (prev > 1 ? prev - 1 : 1));
 		chackSharedUrlBlock();
 	};
 
