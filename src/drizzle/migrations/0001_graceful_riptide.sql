@@ -1,0 +1,1 @@
+ALTER TABLE "shared_questions" RENAME COLUMN "questions" TO "question_ids";

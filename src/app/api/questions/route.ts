@@ -1,10 +1,45 @@
-import questions from "../../../data/questions.json";
+import { db } from "@/drizzle/db";
+import { questionsTable } from "@/drizzle/schema";
+import { sql } from "drizzle-orm";
+import { NextResponse } from "next/server";
 
-export async function GET() {
-	return new Response(JSON.stringify(questions), {
-		status: 200,
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+export async function GET(request: Request) {
+	try {
+		const { searchParams } = new URL(request.url);
+		const count = parseInt(searchParams.get("count") || "3");
+
+		if (isNaN(count) || count < 1) {
+			return NextResponse.json(
+				{
+					error: "Invalid count parameter. Must be a positive number.",
+				},
+				{ status: 400 }
+			);
+		}
+
+		const questions = await db
+			.select({
+				id: questionsTable.id,
+				text: questionsTable.text,
+			})
+			.from(questionsTable)
+			.orderBy(sql`RANDOM()`)
+			.limit(count)
+			.execute();
+
+		if (questions.length === 0) {
+			return NextResponse.json(
+				{ error: "No questions found" },
+				{ status: 404 }
+			);
+		}
+
+		return NextResponse.json(questions);
+	} catch (error) {
+		console.error("Error getting random questions:", error);
+		return NextResponse.json(
+			{ error: "Internal server error" },
+			{ status: 500 }
+		);
+	}
 }

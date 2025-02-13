@@ -1,13 +1,148 @@
-import RandomQuestion from "@/components/RandomQuestion/RandomQuestion";
+"use client";
+import CopyButton from "@/components/CopyButton/CopyButton";
+import QuestionList from "@/components/QuestionList/QuestionList";
+import { Button } from "@/components/ui/button";
+import { Question } from "@/types/types";
+import { Share, Shuffle } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-export default async function Home() {
-	const res = await fetch("http://localhost:3000/api/questions");
-	const questions = await res.json();
+export default function Home() {
+	const [numberDisplayQuestions, setNumberDisplayQuestions] = useState(3);
+	const [randomQuestions, setRandomQuestions] = useState<Question[]>([]);
+	const [showShareButton, setShowShareButton] = useState(true);
+	const [isSharedUrlVisible, setIsSharedUrlVisible] = useState(false);
+	const [shareUrl, setShareUrl] = useState("");
+
+	const fetchQuestions = useCallback(async () => {
+		try {
+			const response = await fetch(
+				`http://localhost:3000/api/questions?count=${numberDisplayQuestions}`
+			);
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "An error occurred");
+			}
+
+			setRandomQuestions(data);
+		} catch (error) {
+			console.error("Error fetching questions:", error);
+		}
+	}, [numberDisplayQuestions]);
+
+	const generateSharedUrl = async () => {
+		const questionIds = randomQuestions.map((q) => q.id);
+		await fetch(
+			`http://localhost:3000/api/questions/save?questionIds=${questionIds}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					questionIds,
+				}),
+			}
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				setShareUrl(`http://localhost:3000/shared/${data.slug}`);
+			});
+	};
+
+	const handleNewQuestionsButtonClick = () => {
+		fetchQuestions();
+		chackSharedUrlBlock();
+	};
+
+	const handleShareButtonClick = () => {
+		setShowShareButton(false);
+		generateSharedUrl();
+		setIsSharedUrlVisible(true);
+	};
+
+	const chackSharedUrlBlock = () => {
+		if (isSharedUrlVisible) {
+			setShowShareButton(true);
+			setIsSharedUrlVisible(false);
+		}
+	};
+
+	const handleDecreaseQuestionsClick = () => {
+		setNumberDisplayQuestions((prev) => prev - 1);
+		chackSharedUrlBlock();
+	};
+
+	const handleIncreaseQuestionsClick = () => {
+		setNumberDisplayQuestions((prev) => prev + 1);
+		chackSharedUrlBlock();
+	};
+
+	useEffect(() => {
+		fetchQuestions();
+	}, [fetchQuestions, numberDisplayQuestions]);
 
 	return (
 		<div>
-			<h1 className="text-5xl font-bold mb-6">Questions</h1>
-			<RandomQuestion questions={questions} />
+			<h1 className="text-3xl sm:text-5xl font-bold mb-6">Questions</h1>
+
+			<div className="flex gap-4 mb-6">
+				{numberDisplayQuestions > 1 ? "Choose from" : "Answer"}
+				<Button
+					onClick={handleDecreaseQuestionsClick}
+					disabled={numberDisplayQuestions === 1}
+				>
+					-
+				</Button>
+				{numberDisplayQuestions}
+				<Button onClick={handleIncreaseQuestionsClick}>+</Button>
+				{numberDisplayQuestions > 1 ? "questions" : "question"}
+			</div>
+
+			<QuestionList questions={randomQuestions} />
+			{isSharedUrlVisible && (
+				<div className="flex flex-col gap-4 p-5 items-center">
+					<p className="font-semibold ">
+						Your{" "}
+						{numberDisplayQuestions > 1
+							? "questions are"
+							: "question is"}{" "}
+						ready!
+					</p>
+					<div className="flex items-center gap-4">
+						<pre className="bg-indigo-100 px-4 py-2 rounded-md select-all break-all">
+							<a
+								href={shareUrl}
+								target="_blank"
+								className="text-indigo-700 hover:underline font-semibold text-wrap"
+							>
+								{shareUrl}
+							</a>
+						</pre>
+						<CopyButton text={shareUrl} />
+					</div>
+				</div>
+			)}
+
+			<div className="flex justify-center gap-6 mt-10">
+				<Button onClick={handleNewQuestionsButtonClick} size="lg">
+					<Shuffle />
+					{numberDisplayQuestions > 1
+						? "Get New Questions"
+						: "Get Another Question"}
+				</Button>
+
+				{showShareButton && (
+					<Button
+						onClick={handleShareButtonClick}
+						variant="secondary"
+						size="lg"
+					>
+						<Share />
+						Share this list
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

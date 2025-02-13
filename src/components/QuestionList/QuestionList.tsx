@@ -13,7 +13,7 @@ export default function QuestionList({ questions }: { questions: Question[] }) {
 					</CardHeader>
 					<CardContent>
 						<p className="font-semibold tracking-tight text-xl sm:text-2xl">
-							{q.question}
+							{q.text}
 						</p>
 					</CardContent>
 				</Card>

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-export default function CopyButton({ text }: { text: string }) {
+type CopyButtonProps = {
+	text: string;
+	className?: string;
+};
+export default function CopyButton({ text, className }: CopyButtonProps) {
 	const [isCopied, setIsCopied] = useState(false);
 
 	async function handleCopy() {
@@ -14,6 +18,8 @@ export default function CopyButton({ text }: { text: string }) {
 		}
 	}
 	return (
-		<Button onClick={handleCopy}>{isCopied ? "Copied!" : "Copy"}</Button>
+		<Button className={className} onClick={handleCopy}>
+			{isCopied ? "Copied!" : "Copy"}
+		</Button>
 	);
 }
