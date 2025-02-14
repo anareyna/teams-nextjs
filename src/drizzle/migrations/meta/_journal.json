@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1739367767396,
-      "tag": "0000_broken_living_tribunal",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1739369195915,
-      "tag": "0001_graceful_riptide",
+      "when": 1739544839248,
+      "tag": "0000_material_yellow_claw",
       "breakpoints": true
     }
   ]
