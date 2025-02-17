@@ -13,24 +13,24 @@ export default function Home() {
 	const [showShareButton, setShowShareButton] = useState(true);
 	const [isSharedUrlVisible, setIsSharedUrlVisible] = useState(false);
 	const [shareUrl, setShareUrl] = useState("");
-	const [isShareLoading, setIsShareLoading] = useState(false);
+	const [isShareLoading, setIsShareLoading] = useState(true);
+	const [isFetchingLoading, setIsFetchingLoading] = useState(true);
 
 	const fetchQuestions = useCallback(async () => {
 		try {
+			setIsFetchingLoading(true);
 			const response = await fetch(
 				`/api/questions?count=${numberDisplayQuestions}`
 			);
 			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(data.error || "An error occurred");
-			}
 
 			console.log(data.map((q: Question) => q.text));
 
 			setRandomQuestions(data);
 		} catch (error) {
 			console.error("Error fetching questions:", error);
+		} finally {
+			setIsFetchingLoading(false);
 		}
 	}, [numberDisplayQuestions]);
 
@@ -98,7 +98,11 @@ export default function Home() {
 				onDecrease={handleDecreaseQuestionsClick}
 			/>
 
-			<QuestionList questions={randomQuestions} />
+			<QuestionList
+				numberOfQuestions={numberDisplayQuestions}
+				questions={randomQuestions}
+				isLoading={isFetchingLoading}
+			/>
 			{isSharedUrlVisible && (
 				<SharedBlock
 					isLoading={isShareLoading}

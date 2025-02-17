@@ -1,23 +1,31 @@
 import { Question } from "@/types/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import QuestionCard from "../QuestionCard/QuestionCard";
 
-export default function QuestionList({ questions }: { questions: Question[] }) {
+type QuestionListProps = {
+	numberOfQuestions: number;
+	questions: Question[];
+	isLoading?: boolean;
+};
+
+export default function QuestionList({
+	numberOfQuestions,
+	questions,
+	isLoading,
+}: QuestionListProps) {
 	return (
 		<div className="flex flex-col gap-8">
-			{questions.map((q, i) => (
-				<Card key={q.id} role="listitem">
-					<CardHeader className="pb-2">
-						<CardTitle className="uppercase text-gray-400 font-bold">
-							Question {i + 1}
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p className="font-semibold tracking-tight text-xl sm:text-2xl">
-							{q.text}
-						</p>
-					</CardContent>
-				</Card>
-			))}
+			{isLoading
+				? Array.from({ length: numberOfQuestions }).map((_, i) => (
+						<QuestionCard
+							key={i}
+							text={""}
+							index={i}
+							isLoadingCard={true}
+						/>
+				  ))
+				: questions.map((q, i) => (
+						<QuestionCard key={i} text={q.text} index={i} />
+				  ))}
 		</div>
 	);
 }

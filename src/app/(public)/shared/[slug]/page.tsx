@@ -23,7 +23,7 @@ export default async function SharedPage({
 			<h1 className="text-3xl sm:text-5xl font-bold mb-6">
 				Shared Questions
 			</h1>
-			<QuestionList questions={data} />
+			<QuestionList numberOfQuestions={data.length} questions={data} />
 		</div>
 	);
 }
