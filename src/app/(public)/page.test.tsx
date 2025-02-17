@@ -17,7 +17,7 @@ const newMockQuestions = [
 ];
 
 const handlers = [
-	http.get("http://localhost:3000/api/questions", ({ request }) => {
+	http.get("/api/questions", ({ request }) => {
 		const url = new URL(request.url);
 		const count = url.searchParams.get("count");
 
@@ -64,7 +64,7 @@ it("renders the page with fetched questions", async () => {
 
 it("handles API errors if request fails", async () => {
 	server.use(
-		http.get("http://localhost:3000/api/questions", () => {
+		http.get("/api/questions", () => {
 			return new HttpResponse(null, { status: 500 });
 		})
 	);
@@ -136,7 +136,7 @@ it("should fetch new questions when clicking on 'Get New Questions' button", asy
 	});
 
 	server.use(
-		http.get("http://localhost:3000/api/questions", () => {
+		http.get("/api/questions", () => {
 			return HttpResponse.json(newMockQuestions);
 		})
 	);

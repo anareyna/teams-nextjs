@@ -10,7 +10,7 @@ export async function GET(
 	{ params }: { params: { slug: string } }
 ) {
 	try {
-		const { slug } = params;
+		const { slug } = await params;
 
 		const sharedQuestions = await db
 			.select({

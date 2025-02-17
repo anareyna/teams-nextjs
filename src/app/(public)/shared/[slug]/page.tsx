@@ -8,7 +8,9 @@ export default async function SharedPage({
 }) {
 	const { slug } = await params;
 
-	const response = await fetch(`http://localhost:3000/api/questions/${slug}`);
+	const response = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/questions/${slug}`
+	);
 
 	if (!response.ok) {
 		notFound();

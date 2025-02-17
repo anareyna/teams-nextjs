@@ -16,13 +16,15 @@ export default function Home() {
 	const fetchQuestions = useCallback(async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:3000/api/questions?count=${numberDisplayQuestions}`
+				`/api/questions?count=${numberDisplayQuestions}`
 			);
 			const data = await response.json();
 
 			if (!response.ok) {
 				throw new Error(data.error || "An error occurred");
 			}
+
+			console.log(data.map((q: Question) => q.text));
 
 			setRandomQuestions(data);
 		} catch (error) {
@@ -32,21 +34,18 @@ export default function Home() {
 
 	const generateSharedUrl = async () => {
 		const questionIds = randomQuestions.map((q) => q.id);
-		await fetch(
-			`http://localhost:3000/api/questions/save?questionIds=${questionIds}`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					questionIds,
-				}),
-			}
-		)
+		await fetch(`/api/questions/save?questionIds=${questionIds}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				questionIds,
+			}),
+		})
 			.then((res) => res.json())
 			.then((data) => {
-				setShareUrl(`http://localhost:3000/shared/${data.slug}`);
+				setShareUrl(`${window.location.origin}/shared/${data.slug}`);
 			});
 	};
 
@@ -113,7 +112,6 @@ export default function Home() {
 						<pre className="bg-indigo-100 px-4 py-2 rounded-md select-all break-all">
 							<a
 								href={shareUrl}
-								target="_blank"
 								className="text-indigo-700 hover:underline font-semibold text-wrap"
 							>
 								{shareUrl}
