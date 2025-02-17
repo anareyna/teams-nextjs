@@ -13,7 +13,7 @@ export default function QuestionCard({
 	isLoadingCard,
 }: QuestionCardProps) {
 	return (
-		<Card role="listitem" data-testId={`question-card-${index}`}>
+		<Card role="listitem" data-testid={`question-card-${index}`}>
 			<CardHeader className="pb-2">
 				<CardTitle className="uppercase text-gray-400 font-bold">
 					Question {index + 1}
@@ -23,7 +23,7 @@ export default function QuestionCard({
 				{isLoadingCard ? (
 					<>
 						<Skeleton
-							data-testId="question-card-skeleton"
+							data-testid="question-card-skeleton"
 							className="w-full h-[20px] rounded-full"
 						/>
 						<Skeleton className="w-1/2 h-[20px] rounded-full" />
