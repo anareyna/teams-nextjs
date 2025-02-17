@@ -1,7 +1,7 @@
 "use client";
-import CopyButton from "@/components/CopyButton/CopyButton";
 import QuestionControls from "@/components/QuestionControls/QuestionControls";
 import QuestionList from "@/components/QuestionList/QuestionList";
+import SharedBlock from "@/components/SharedBlock/SharedBlock";
 import { Button } from "@/components/ui/button";
 import { Question } from "@/types/types";
 import { Share, Shuffle } from "lucide-react";
@@ -13,6 +13,7 @@ export default function Home() {
 	const [showShareButton, setShowShareButton] = useState(true);
 	const [isSharedUrlVisible, setIsSharedUrlVisible] = useState(false);
 	const [shareUrl, setShareUrl] = useState("");
+	const [isShareLoading, setIsShareLoading] = useState(false);
 
 	const fetchQuestions = useCallback(async () => {
 		try {
@@ -34,6 +35,7 @@ export default function Home() {
 	}, [numberDisplayQuestions]);
 
 	const generateSharedUrl = async () => {
+		setIsShareLoading(true);
 		const questionIds = randomQuestions.map((q) => q.id);
 		await fetch(`/api/questions/save?questionIds=${questionIds}`, {
 			method: "POST",
@@ -47,12 +49,15 @@ export default function Home() {
 			.then((res) => res.json())
 			.then((data) => {
 				setShareUrl(`${window.location.origin}/shared/${data.slug}`);
+			})
+			.finally(() => {
+				setIsShareLoading(false);
 			});
 	};
 
 	const handleNewQuestionsButtonClick = () => {
 		fetchQuestions();
-		chackSharedUrlBlock();
+		checkSharedUrlBlock();
 	};
 
 	const handleShareButtonClick = () => {
@@ -61,7 +66,7 @@ export default function Home() {
 		setIsSharedUrlVisible(true);
 	};
 
-	const chackSharedUrlBlock = () => {
+	const checkSharedUrlBlock = () => {
 		if (isSharedUrlVisible) {
 			setShowShareButton(true);
 			setIsSharedUrlVisible(false);
@@ -70,12 +75,12 @@ export default function Home() {
 
 	const handleDecreaseQuestionsClick = () => {
 		setNumberDisplayQuestions((prev) => (prev > 1 ? prev - 1 : 1));
-		chackSharedUrlBlock();
+		checkSharedUrlBlock();
 	};
 
 	const handleIncreaseQuestionsClick = () => {
 		setNumberDisplayQuestions((prev) => prev + 1);
-		chackSharedUrlBlock();
+		checkSharedUrlBlock();
 	};
 
 	useEffect(() => {
@@ -95,26 +100,11 @@ export default function Home() {
 
 			<QuestionList questions={randomQuestions} />
 			{isSharedUrlVisible && (
-				<div className="flex flex-col gap-4 p-5 items-center">
-					<p className="font-semibold ">
-						Your{" "}
-						{numberDisplayQuestions > 1
-							? "questions are"
-							: "question is"}{" "}
-						ready!
-					</p>
-					<div className="flex items-center gap-4">
-						<pre className="bg-indigo-100 px-4 py-2 rounded-md select-all break-all">
-							<a
-								href={shareUrl}
-								className="text-indigo-700 hover:underline font-semibold text-wrap"
-							>
-								{shareUrl}
-							</a>
-						</pre>
-						<CopyButton text={shareUrl} />
-					</div>
-				</div>
+				<SharedBlock
+					isLoading={isShareLoading}
+					numberOfQuestions={numberDisplayQuestions}
+					shareUrl={shareUrl}
+				/>
 			)}
 
 			<div className="flex justify-center gap-6 mt-10">
