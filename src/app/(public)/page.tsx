@@ -1,5 +1,6 @@
 "use client";
 import CopyButton from "@/components/CopyButton/CopyButton";
+import QuestionControls from "@/components/QuestionControls/QuestionControls";
 import QuestionList from "@/components/QuestionList/QuestionList";
 import { Button } from "@/components/ui/button";
 import { Question } from "@/types/types";
@@ -85,18 +86,12 @@ export default function Home() {
 		<div>
 			<h1 className="text-3xl sm:text-5xl font-bold mb-6">Questions</h1>
 
-			<div className="flex gap-4 mb-6">
-				{numberDisplayQuestions > 1 ? "Choose from" : "Answer"}
-				<Button
-					onClick={handleDecreaseQuestionsClick}
-					disabled={numberDisplayQuestions === 1}
-				>
-					-
-				</Button>
-				{numberDisplayQuestions}
-				<Button onClick={handleIncreaseQuestionsClick}>+</Button>
-				{numberDisplayQuestions > 1 ? "questions" : "question"}
-			</div>
+			<QuestionControls
+				className="mb-6"
+				numberOfQuestions={numberDisplayQuestions}
+				onIncrease={handleIncreaseQuestionsClick}
+				onDecrease={handleDecreaseQuestionsClick}
+			/>
 
 			<QuestionList questions={randomQuestions} />
 			{isSharedUrlVisible && (
