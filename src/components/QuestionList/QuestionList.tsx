@@ -12,20 +12,19 @@ export default function QuestionList({
 	questions,
 	isLoading,
 }: QuestionListProps) {
+	const items = isLoading
+		? Array.from({ length: numberOfQuestions }, () => null)
+		: questions;
 	return (
 		<div className="flex flex-col gap-8">
-			{isLoading
-				? Array.from({ length: numberOfQuestions }).map((_, i) => (
-						<QuestionCard
-							key={i}
-							text={""}
-							index={i}
-							isLoadingCard={true}
-						/>
-				  ))
-				: questions.map((q, i) => (
-						<QuestionCard key={i} text={q.text} index={i} />
-				  ))}
+			{items.map((q, i) => (
+				<QuestionCard
+					key={q?.id || i}
+					text={q?.text || ""}
+					index={i}
+					isLoadingCard={isLoading}
+				/>
+			))}
 		</div>
 	);
 }
