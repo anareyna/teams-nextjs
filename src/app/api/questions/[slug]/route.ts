@@ -1,13 +1,11 @@
 import { db } from "@/drizzle/db";
 import { questionsTable, sharedQuestionsTable } from "@/drizzle/schema";
 import { eq, inArray } from "drizzle-orm";
-import { NextResponse } from "next/server";
-
-type QuestionId = typeof questionsTable.id.dataType;
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-	req: Request,
-	{ params }: { params: { slug: string } }
+	req: NextRequest,
+	{ params }: { params: Promise<{ slug: string }> }
 ) {
 	try {
 		const { slug } = await params;
@@ -21,16 +19,14 @@ export async function GET(
 			.limit(1)
 			.execute();
 
-		const data = sharedQuestions[0];
-
-		if (!data) {
+		if (!sharedQuestions.length) {
 			return NextResponse.json(
 				{ error: "No questions found" },
 				{ status: 404 }
 			);
 		}
 
-		const questionIds = data.questionIds as QuestionId[];
+		const questionIds = sharedQuestions[0].questionIds as string[];
 
 		const questions = await db
 			.select({
