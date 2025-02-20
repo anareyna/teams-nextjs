@@ -4,16 +4,34 @@ import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-	const { questionIds } = await req.json();
+	try {
+		const { questionIds } = await req.json();
 
-	const slug = randomBytes(4).toString("base64url");
+		if (
+			!questionIds ||
+			!Array.isArray(questionIds) ||
+			questionIds.length === 0
+		) {
+			return NextResponse.json(
+				{ error: "questionIds must be a non-empty array" },
+				{ status: 400 }
+			);
+		}
 
-	await db.insert(sharedQuestionsTable).values({
-		slug,
-		questionIds,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	});
+		const slug = randomBytes(3).toString("hex");
 
-	return NextResponse.json({ slug });
+		await db.insert(sharedQuestionsTable).values({
+			slug,
+			questionIds,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+		});
+
+		return NextResponse.json({ slug });
+	} catch (error) {
+		return NextResponse.json(
+			{ error: `Internal server error: ${error}` },
+			{ status: 500 }
+		);
+	}
 }

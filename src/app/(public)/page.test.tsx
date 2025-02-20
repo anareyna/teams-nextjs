@@ -1,52 +1,9 @@
+import { server } from "@/mocks/server";
+import { newMockQuestions } from "@/mocks/test-data/questions";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { setupServer } from "msw/node";
-import { afterAll, afterEach, beforeAll, expect, it } from "vitest";
+import { expect, it } from "vitest";
 import Home from "./page";
-
-const mockQuestions = [
-	{ id: "1", text: "q1" },
-	{ id: "2", text: "q2" },
-	{ id: "3", text: "q3" },
-];
-
-const newMockQuestions = [
-	{ id: "4", text: "q4" },
-	{ id: "5", text: "q5" },
-	{ id: "6", text: "q6" },
-];
-
-const handlers = [
-	http.get("/api/questions", ({ request }) => {
-		const url = new URL(request.url);
-		const count = url.searchParams.get("count");
-
-		switch (count) {
-			case "1":
-				return HttpResponse.json([mockQuestions[0]]);
-			case "2":
-				return HttpResponse.json(mockQuestions.slice(0, 2));
-			case "3":
-				return HttpResponse.json(mockQuestions);
-			case "4":
-				return HttpResponse.json([
-					...mockQuestions,
-					{ id: "4", text: "q4" },
-				]);
-			default:
-				return HttpResponse.json(
-					{ error: "Invalid count" },
-					{ status: 400 }
-				);
-		}
-	}),
-];
-
-const server = setupServer(...handlers);
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 it("renders the page with fetched questions", async () => {
 	render(<Home />);
