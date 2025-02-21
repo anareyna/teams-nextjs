@@ -8,7 +8,7 @@ export default function Navbar() {
 			<nav className="font-medium flex items-center text-sm gap-6 container">
 				<Link href="/" className="flex items-center gap-2 mr-auto">
 					<MessageCircleQuestion className="h-6 w-6" />
-					<span className="text-lg">QuestionsApp</span>
+					<span className="text-lg">IceQ</span>
 				</Link>
 				<ModeToggle />
 			</nav>

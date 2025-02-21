@@ -1,3 +1,4 @@
+import { QUESTION_CATEGORIES } from "@/lib/constants";
 import fs from "fs";
 import path from "path";
 import { db } from "../db";
@@ -13,7 +14,7 @@ async function importQuestions() {
 	}
 
 	// Predefined category ID to be used for all questions
-	const categoryId = "5987b68f-9661-4221-8772-2af2e389af4a";
+	const categoryId = QUESTION_CATEGORIES.WORK;
 
 	// Insert questions with the predefined categoryId (assuming the category exists)
 	await db.insert(questionsTable).values(

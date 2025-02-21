@@ -20,9 +20,11 @@ export default async function SharedPage({
 
 	return (
 		<div>
-			<h1 className="text-3xl sm:text-5xl font-bold mb-6">
-				Shared Questions
-			</h1>
+			<h1 className="heading-primary">You're In! 🎉</h1>
+			<p className="text-lg mb-6">
+				These are the selected questions. Take a moment to read them and
+				choose any question you'd like to answer.
+			</p>
 			<QuestionList numberOfQuestions={data.length} questions={data} />
 		</div>
 	);

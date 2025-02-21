@@ -27,7 +27,7 @@ it("should render shared questions successfully", async () => {
 	const mockParams = Promise.resolve({ slug: "abc123" });
 	render(await SharedPage({ params: mockParams }));
 
-	expect(screen.getByText("Shared Questions")).toBeInTheDocument();
+	expect(screen.getByText(/You're in!/i)).toBeInTheDocument();
 
 	mockQuestions.forEach((question) => {
 		expect(screen.getByText(question.text)).toBeInTheDocument();

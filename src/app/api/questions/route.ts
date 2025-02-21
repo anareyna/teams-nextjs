@@ -1,12 +1,15 @@
 import { db } from "@/drizzle/db";
 import { questionsTable } from "@/drizzle/schema";
+import { DEFAULT_QUESTION_COUNT } from "@/lib/constants";
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
 	try {
 		const { searchParams } = new URL(request.url);
-		const count = parseInt(searchParams.get("count") || "3");
+		const count = parseInt(
+			searchParams.get("count") || DEFAULT_QUESTION_COUNT.toString()
+		);
 
 		if (isNaN(count) || count < 1) {
 			return NextResponse.json(
