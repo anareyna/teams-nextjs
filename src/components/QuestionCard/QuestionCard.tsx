@@ -1,17 +1,12 @@
+import { CardProps } from "@/types/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
-
-type QuestionCardProps = {
-	text: string;
-	index: number;
-	isLoadingCard?: boolean;
-};
 
 export default function QuestionCard({
 	text,
 	index,
 	isLoadingCard,
-}: QuestionCardProps) {
+}: CardProps) {
 	return (
 		<Card role="listitem" data-testid={`question-card-${index}`}>
 			<CardHeader className="pb-2">

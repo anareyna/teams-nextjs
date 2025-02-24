@@ -43,7 +43,7 @@ export default function Home() {
 					</p>
 					<h2 className="heading-secondary">Choose Your Space:</h2>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,_1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 my-6">
 						{QUESTION_CATEGORIES.map((category) => (
 							<Card
 								key={category.id}
@@ -77,7 +77,7 @@ export default function Home() {
 					</h2>
 					<p className="text-lg">Select a mode:</p>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,_1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 my-6">
 						<Card
 							className="flex flex-col cursor-pointer"
 							onClick={() => {
@@ -102,7 +102,7 @@ export default function Home() {
 						</Card>
 
 						<Card
-							className="flex flex-col cursor-pointer hidden"
+							className="flex flex-col cursor-pointer"
 							onClick={() => {
 								router.push(`/${selectedCategorySlug}/mystery`);
 							}}

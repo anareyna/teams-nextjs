@@ -1,35 +1,11 @@
-import { Question } from "@/types/types";
+import { QuestionListProps } from "@/types/types";
 import QuestionCard from "../QuestionCard/QuestionCard";
+import QuestionListBase from "../QuestionListBase/QuestionListBase";
 
-type QuestionListProps = {
-	title?: string;
-	numberOfQuestions: number;
-	questions: Question[];
-	isLoading?: boolean;
-};
-
-export default function QuestionList({
-	title,
-	numberOfQuestions,
-	questions,
-	isLoading,
-}: QuestionListProps) {
-	const items = isLoading
-		? Array.from({ length: numberOfQuestions }, () => null)
-		: questions;
+export default function QuestionList(props: QuestionListProps) {
 	return (
-		<>
-			{title && <h2>{title}</h2>}
-			<div className="flex flex-col gap-8">
-				{items.map((q, i) => (
-					<QuestionCard
-						key={q?.id || i}
-						text={q?.text || ""}
-						index={i}
-						isLoadingCard={isLoading}
-					/>
-				))}
-			</div>
-		</>
+		<div className="flex flex-col gap-8" data-testid="question-list">
+			<QuestionListBase {...props} CardComponent={QuestionCard} />
+		</div>
 	);
 }

@@ -30,15 +30,22 @@ export const questionsHandlers = [
 		const { slug } = params;
 
 		if (slug === "invalid-slug") {
-			return new HttpResponse(null, { status: 404 });
+			return HttpResponse.json(
+				{ questions: [], mode: null },
+				{ status: 404 }
+			);
 		}
 
-		return HttpResponse.json(mockQuestions);
+		return HttpResponse.json({
+			questions: mockQuestions,
+			mode: "list",
+		});
 	}),
 
 	http.post("/api/questions/save", async ({ request }) => {
-		const { questionIds } = (await request.json()) as {
+		const { questionIds, mode } = (await request.json()) as {
 			questionIds: string[];
+			mode: string;
 		};
 
 		if (
@@ -52,6 +59,13 @@ export const questionsHandlers = [
 			);
 		}
 
-		return HttpResponse.json({ slug: "abc123" });
+		if (!mode || !["list", "mystery"].includes(mode)) {
+			return HttpResponse.json(
+				{ error: "Invalid mode" },
+				{ status: 400 }
+			);
+		}
+
+		return HttpResponse.json({ slug: "abc123", mode });
 	}),
 ];

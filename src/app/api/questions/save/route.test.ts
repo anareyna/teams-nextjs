@@ -1,5 +1,6 @@
 import { db } from "@/drizzle/db";
 import { sharedQuestionsTable } from "@/drizzle/schema";
+import { QUESTION_MODES } from "@/lib/constants";
 import { NextResponse } from "next/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
@@ -36,6 +37,7 @@ describe("POST /api/questions/save", () => {
 				method: "POST",
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
+					mode: "list",
 				}),
 			}
 		);
@@ -62,7 +64,7 @@ describe("POST /api/questions/save", () => {
 			"http://localhost:3000/api/questions/save",
 			{
 				method: "POST",
-				body: JSON.stringify({}),
+				body: JSON.stringify({ mode: "list" }),
 			}
 		);
 
@@ -82,6 +84,7 @@ describe("POST /api/questions/save", () => {
 				method: "POST",
 				body: JSON.stringify({
 					questionIds: [],
+					mode: "list",
 				}),
 			}
 		);
@@ -95,13 +98,14 @@ describe("POST /api/questions/save", () => {
 		});
 	});
 
-	it("should handle invalid questionIds with 400 error", async () => {
+	it("should handle invalid mode with 400 error", async () => {
 		const mockRequest = new Request(
 			"http://localhost:3000/api/questions/save",
 			{
 				method: "POST",
 				body: JSON.stringify({
-					questionIds: "not an array",
+					questionIds: ["q1", "q2", "q3"],
+					mode: "random",
 				}),
 			}
 		);
@@ -111,7 +115,27 @@ describe("POST /api/questions/save", () => {
 
 		expect(response.status).toBe(400);
 		expect(data).toEqual({
-			error: "questionIds must be a non-empty array",
+			error: `Invalid mode. Must be one of: ${QUESTION_MODES.join(", ")}`,
+		});
+	});
+
+	it("should handle missing mode with 400 error", async () => {
+		const mockRequest = new Request(
+			"http://localhost:3000/api/questions/save",
+			{
+				method: "POST",
+				body: JSON.stringify({
+					questionIds: ["q1", "q2", "q3"],
+				}),
+			}
+		);
+
+		const response = await POST(mockRequest);
+		const data = await response.json();
+
+		expect(response.status).toBe(400);
+		expect(data).toEqual({
+			error: `Invalid mode. Must be one of: ${QUESTION_MODES.join(", ")}`,
 		});
 	});
 
@@ -126,6 +150,7 @@ describe("POST /api/questions/save", () => {
 				method: "POST",
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
+					mode: "list",
 				}),
 			}
 		);

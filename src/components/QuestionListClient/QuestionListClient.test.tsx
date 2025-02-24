@@ -83,4 +83,27 @@ describe("QuestionListClient", () => {
 			expect(screen.getByText(/shared\/abc123/i)).toBeInTheDocument()
 		);
 	});
+
+	it("should render QuestionCardList component when useFlipCards prop is false or not present", () => {
+		render(
+			<QuestionListClient
+				initialQuestionCount={3}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
+		expect(screen.queryByTestId("flip-card-list")).not.toBeInTheDocument();
+		expect(screen.getByTestId("question-list")).toBeInTheDocument();
+	});
+
+	it("should render FlipCardList component when useFlipCards prop is true", () => {
+		render(
+			<QuestionListClient
+				initialQuestionCount={3}
+				categoryId={QUESTION_CATEGORIES[0].id}
+				useFlipCards={true}
+			/>
+		);
+		expect(screen.queryByTestId("question-list")).not.toBeInTheDocument();
+		expect(screen.getByTestId("flip-card-list")).toBeInTheDocument();
+	});
 });

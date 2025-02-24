@@ -1,11 +1,13 @@
 import { db } from "@/drizzle/db";
 import { sharedQuestionsTable } from "@/drizzle/schema";
+import { QUESTION_MODES } from "@/lib/constants";
+import { QuestionMode } from "@/types/types";
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
 	try {
-		const { questionIds } = await req.json();
+		const { questionIds, mode } = await req.json();
 
 		if (
 			!questionIds ||
@@ -18,11 +20,23 @@ export async function POST(req: Request) {
 			);
 		}
 
+		if (!QUESTION_MODES.includes(mode as QuestionMode)) {
+			return NextResponse.json(
+				{
+					error: `Invalid mode. Must be one of: ${QUESTION_MODES.join(
+						", "
+					)}`,
+				},
+				{ status: 400 }
+			);
+		}
+
 		const slug = randomBytes(3).toString("hex");
 
 		await db.insert(sharedQuestionsTable).values({
 			slug,
 			questionIds,
+			mode,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});

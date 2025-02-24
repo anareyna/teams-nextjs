@@ -10,13 +10,16 @@ import QuestionControls from "@/components/QuestionControls/QuestionControls";
 import SharedBlock from "@/components/SharedBlock/SharedBlock";
 import { generateSharedUrl } from "@/lib/actions";
 import { DEFAULT_QUESTION_COUNT } from "@/lib/constants";
+import FlipCardList from "../FlipCardList/FlipCardList";
 
 export default function QuestionListClient({
 	initialQuestionCount = DEFAULT_QUESTION_COUNT,
 	categoryId,
+	useFlipCards,
 }: {
 	initialQuestionCount?: number;
 	categoryId: string;
+	useFlipCards?: boolean;
 }) {
 	const [numberDisplayQuestions, setNumberDisplayQuestions] =
 		useState(initialQuestionCount);
@@ -54,7 +57,8 @@ export default function QuestionListClient({
 	const handleShareButtonClick = async () => {
 		setIsShareLoading(true);
 		const questionIds = questions.map((q) => q.id);
-		const slug = await generateSharedUrl(questionIds);
+		const mode = useFlipCards ? "mystery" : "list";
+		const slug = await generateSharedUrl(questionIds, mode);
 		setShareUrl(`${window.location.origin}/shared/${slug}`);
 		setShowShareButton(false);
 		setIsSharedUrlVisible(true);
@@ -87,11 +91,19 @@ export default function QuestionListClient({
 				onDecrease={handleDecreaseQuestionsClick}
 			/>
 
-			<QuestionList
-				numberOfQuestions={numberDisplayQuestions}
-				questions={questions}
-				isLoading={isFetchingLoading}
-			/>
+			{useFlipCards ? (
+				<FlipCardList
+					numberOfQuestions={numberDisplayQuestions}
+					questions={questions}
+					isLoading={isFetchingLoading}
+				/>
+			) : (
+				<QuestionList
+					numberOfQuestions={numberDisplayQuestions}
+					questions={questions}
+					isLoading={isFetchingLoading}
+				/>
+			)}
 
 			{isSharedUrlVisible && (
 				<SharedBlock

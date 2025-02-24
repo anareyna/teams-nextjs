@@ -5,6 +5,7 @@ export const sharedQuestionsTable = pgTable("shared_questions", {
 	id,
 	slug: text("slug").notNull().unique(),
 	questionIds: jsonb("question_ids").notNull(),
+	mode: text("mode").notNull().default("list"),
 	createdAt,
 	updatedAt,
 });

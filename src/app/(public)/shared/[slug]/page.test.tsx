@@ -49,7 +49,7 @@ it("should call notFound() when API returns non-ok response", async () => {
 it("should handle API errors gracefully", async () => {
 	process.env.NEXT_PUBLIC_BASE_URL = "";
 
-	const mockParams = Promise.resolve({ slug: "abc123" });
+	const mockParams = Promise.resolve({ slug: "abc123", mode: "list" });
 
 	try {
 		await SharedPage({ params: mockParams });
@@ -59,7 +59,7 @@ it("should handle API errors gracefully", async () => {
 });
 
 it("should pass correct props to QuestionList component", async () => {
-	const mockParams = Promise.resolve({ slug: "abc123" });
+	const mockParams = Promise.resolve({ slug: "abc123", mode: "list" });
 	render(await SharedPage({ params: mockParams }));
 
 	const questionList = screen.getByTestId("question-list");

@@ -1,0 +1,1 @@
+ALTER TABLE "shared_questions" ADD COLUMN "mode" text DEFAULT 'list' NOT NULL;
