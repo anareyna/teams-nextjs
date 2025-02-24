@@ -4,8 +4,11 @@ import path from "path";
 import { db } from "../db";
 import { questionsTable } from "../schema/questions";
 
-async function importQuestions() {
-	const filePath = path.join(process.cwd(), "./src/data/questions.json");
+async function importFriendsQuestions() {
+	const filePath = path.join(
+		process.cwd(),
+		"./src/data/friends-questions.json"
+	);
 	const rawData = fs.readFileSync(filePath, "utf-8");
 	const questions = JSON.parse(rawData);
 
@@ -13,26 +16,27 @@ async function importQuestions() {
 		throw new Error("Invalid JSON format: Expected an array.");
 	}
 
-	// Predefined category ID to be used for work questions
-	const categoryId = QUESTION_CATEGORIES[0].id;
+	// Ensure there's a valid category for Friends
+	const categoryId = QUESTION_CATEGORIES[1].id;
 
-	// Insert questions with the predefined categoryId (assuming the category exists)
+	if (!categoryId) {
+		throw new Error("Category ID for Friends questions is missing!");
+	}
+
 	await db.insert(questionsTable).values(
-		questions.map((q) => ({
-			text: q.text,
-			categoryId: categoryId,
+		questions.map((text) => ({
+			text,
+			categoryId,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		}))
 	);
 
-	console.log(
-		`Successfully imported ${questions.length} questions with category ID ${categoryId}!`
-	);
+	console.log(`Successfully imported ${questions.length} Friends questions!`);
 	process.exit();
 }
 
-importQuestions().catch((err) => {
+importFriendsQuestions().catch((err) => {
 	console.error("Import failed:", err);
 	process.exit(1);
 });

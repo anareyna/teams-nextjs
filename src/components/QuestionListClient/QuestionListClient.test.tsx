@@ -1,4 +1,5 @@
 import * as actions from "@/lib/actions";
+import { QUESTION_CATEGORIES } from "@/lib/constants";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import QuestionListClient from "./QuestionListClient";
@@ -7,7 +8,12 @@ vi.spyOn(actions, "generateSharedUrl").mockResolvedValue("abc123");
 
 describe("QuestionListClient", () => {
 	it("fetches and displays questions on load", async () => {
-		render(<QuestionListClient initialQuestionCount={3} />);
+		render(
+			<QuestionListClient
+				initialQuestionCount={3}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
 
 		await waitFor(() => {
 			expect(screen.getByText("q1")).toBeInTheDocument();
@@ -17,7 +23,12 @@ describe("QuestionListClient", () => {
 	});
 
 	it("fetches new questions when shuffle button is clicked", async () => {
-		render(<QuestionListClient initialQuestionCount={2} />);
+		render(
+			<QuestionListClient
+				initialQuestionCount={2}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
 
 		await waitFor(() => expect(screen.getByText("q1")).toBeInTheDocument());
 
@@ -29,7 +40,12 @@ describe("QuestionListClient", () => {
 	});
 
 	it("increases the number of questions when + is clicked", async () => {
-		render(<QuestionListClient initialQuestionCount={2} />);
+		render(
+			<QuestionListClient
+				initialQuestionCount={2}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
 
 		fireEvent.click(screen.getByRole("button", { name: "+" }));
 
@@ -37,7 +53,12 @@ describe("QuestionListClient", () => {
 	});
 
 	it("decreases the number of questions when - is clicked", async () => {
-		render(<QuestionListClient initialQuestionCount={3} />);
+		render(
+			<QuestionListClient
+				initialQuestionCount={3}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
 
 		fireEvent.click(screen.getByRole("button", { name: "-" }));
 
@@ -47,7 +68,12 @@ describe("QuestionListClient", () => {
 	});
 
 	it("generates and displays a shareable URL", async () => {
-		render(<QuestionListClient initialQuestionCount={3} />);
+		render(
+			<QuestionListClient
+				initialQuestionCount={3}
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
 
 		fireEvent.click(
 			screen.getByRole("button", { name: /share this list/i })

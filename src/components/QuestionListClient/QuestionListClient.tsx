@@ -13,8 +13,10 @@ import { DEFAULT_QUESTION_COUNT } from "@/lib/constants";
 
 export default function QuestionListClient({
 	initialQuestionCount = DEFAULT_QUESTION_COUNT,
+	categoryId,
 }: {
 	initialQuestionCount?: number;
+	categoryId: string;
 }) {
 	const [numberDisplayQuestions, setNumberDisplayQuestions] =
 		useState(initialQuestionCount);
@@ -29,7 +31,7 @@ export default function QuestionListClient({
 		setIsFetchingLoading(true);
 		try {
 			const response = await fetch(
-				`/api/questions?count=${numberDisplayQuestions}`
+				`/api/questions?count=${numberDisplayQuestions}&categoryId=${categoryId}`
 			);
 			const newQuestions = await response.json();
 			setQuestions(newQuestions);
@@ -38,7 +40,7 @@ export default function QuestionListClient({
 		} finally {
 			setIsFetchingLoading(false);
 		}
-	}, [numberDisplayQuestions]);
+	}, [numberDisplayQuestions, categoryId]);
 
 	useEffect(() => {
 		fetchQuestions();

@@ -39,4 +39,16 @@ describe("QuestionList component", () => {
 			).toHaveTextContent(question.text);
 		});
 	});
+
+	it('renders a title when the "title" prop is passed', () => {
+		render(
+			<QuestionList
+				title="Test title"
+				questions={mockQuestions}
+				numberOfQuestions={3}
+				isLoading={false}
+			/>
+		);
+		expect(screen.getByText("Test title")).toBeInTheDocument();
+	});
 });
