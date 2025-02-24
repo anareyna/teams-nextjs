@@ -102,7 +102,11 @@ export default function QuestionListClient({
 			)}
 
 			<div className="flex justify-center gap-6 mt-10">
-				<Button onClick={handleNewQuestionsButtonClick} size="lg">
+				<Button
+					onClick={handleNewQuestionsButtonClick}
+					size="lg"
+					disabled={isFetchingLoading}
+				>
 					<Shuffle />
 					{numberDisplayQuestions > 1
 						? "Get New Questions"
