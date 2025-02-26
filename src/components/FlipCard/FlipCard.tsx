@@ -11,21 +11,21 @@ export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 
 	return (
 		<motion.div
-			className="relative w-64 h-52 cursor-pointer"
+			className="relative cursor-pointer"
 			onClick={() => setIsFlipped(!isFlipped)}
 			initial={false}
 			animate={{ rotateY: isFlipped ? 180 : 0 }}
 			transition={{ duration: 0.6 }}
-			style={{ transformStyle: "preserve-3d" }}
+			style={{ transformStyle: "preserve-3d", display: "inline-block" }}
 			role="listitem"
 		>
 			{/* Front Side */}
 			<motion.div
-				className="absolute w-full h-full backface-hidden"
+				className="inset-0 backface-hidden"
 				style={{ backfaceVisibility: "hidden" }}
 			>
-				<Card className="flex justify-center items-center h-full">
-					<CardContent className="text-center p-6 text-xl font-semibold">
+				<Card className="absolute w-full flex justify-center p-8 min-h-[150px] sm:min-h-[250px]">
+					<CardContent className="sm:text-xl font-semibold flex items-center p-0">
 						Question {index + 1}
 					</CardContent>
 				</Card>
@@ -33,23 +33,21 @@ export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 
 			{/* Back Side */}
 			<motion.div
-				className="absolute w-full h-full backface-hidden"
+				className="inset-0 backface-hidden "
 				style={{
 					backfaceVisibility: "hidden",
 					transform: "rotateY(180deg)",
 				}}
 			>
-				<Card className="flex justify-center items-center h-full bg-gray-800 text-white">
-					<CardContent className="text-center p-6 text-xl font-semibold">
+				<Card className="flex justify-center items-center p-8 min-h-[150px] sm:min-h-[250px]">
+					<CardContent className="text-center sm:text-xl p-0">
 						{isLoadingCard ? (
 							<Skeleton
 								data-testid="question-card-skeleton"
 								className="w-full h-[20px] rounded-full"
 							/>
 						) : (
-							<p className="font-semibold tracking-tight text-xl">
-								{text}
-							</p>
+							<p className="tracking-tight sm:text-xl">{text}</p>
 						)}
 					</CardContent>
 				</Card>

@@ -36,7 +36,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Navbar />
-					<div className="max-w-5xl mx-auto flex flex-col justify-center p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+					<div className="max-w-6xl mx-auto flex flex-col justify-center p-8 sm:p-20 pb-40 font-[family-name:var(--font-geist-sans)]">
 						{children}
 					</div>
 				</ThemeProvider>

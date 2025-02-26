@@ -13,7 +13,7 @@ describe("QuestionControls component", () => {
 		);
 
 		expect(
-			screen.getByText((content) => content.includes("Choose from"))
+			screen.getByText((content) => content.includes("Display"))
 		).toBeInTheDocument();
 		expect(
 			screen.getByText((content) => content.includes("3"))
