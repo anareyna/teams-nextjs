@@ -32,9 +32,7 @@ describe("QuestionListClient", () => {
 
 		await waitFor(() => expect(screen.getByText("q1")).toBeInTheDocument());
 
-		fireEvent.click(
-			screen.getByRole("button", { name: /get new questions/i })
-		);
+		fireEvent.click(screen.getByRole("button", { name: /new questions/i }));
 
 		await waitFor(() => expect(screen.getByText("q2")).toBeInTheDocument());
 	});

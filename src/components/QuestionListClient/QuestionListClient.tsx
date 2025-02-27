@@ -121,8 +121,8 @@ export default function QuestionListClient({
 				>
 					<Shuffle />
 					{numberDisplayQuestions > 1
-						? "Get New Questions"
-						: "Get Another Question"}
+						? "New Questions"
+						: "Another Question"}
 				</Button>
 
 				{showShareButton && (

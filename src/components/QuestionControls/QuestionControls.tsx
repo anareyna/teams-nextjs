@@ -15,7 +15,7 @@ export default function QuestionControls({
 }: QuestionControlsProps) {
 	return (
 		<div className={className}>
-			<div className="flex gap-4 items-center text-lg">
+			<div className="flex gap-4 items-center sm:text-lg">
 				Display
 				<Button onClick={onDecrease} disabled={numberOfQuestions === 1}>
 					-

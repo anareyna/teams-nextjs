@@ -10,7 +10,7 @@ export default function QuestionCard({
 	return (
 		<Card role="listitem" data-testid={`question-card-${index}`}>
 			<CardHeader className="pb-2">
-				<CardTitle className="uppercase text-gray-400 font-bold">
+				<CardTitle className="uppercase text-gray-400 font-bold text-sm sm:text-base">
 					Question {index + 1}
 				</CardTitle>
 			</CardHeader>
@@ -24,9 +24,7 @@ export default function QuestionCard({
 						<Skeleton className="w-1/2 h-[20px] rounded-full" />
 					</>
 				) : (
-					<p className="font-semibold tracking-tight text-xl sm:text-2xl">
-						{text}
-					</p>
+					<p className="font-semibold sm:text-xl">{text}</p>
 				)}
 			</CardContent>
 		</Card>

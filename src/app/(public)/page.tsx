@@ -37,13 +37,15 @@ export default function Home() {
 			{selectedCategorySlug === null && (
 				<div>
 					<h1 className="heading-primary">👋 Welcome to IceQ!</h1>
-					<p className="text-xl mb-6">
+					<p className="sm:text-xl mb-6">
 						IceQ helps spark meaningful conversations, whether
 						you're with your team, friends, or a close group.
 					</p>
-					<h2 className="heading-secondary">Choose Your Space:</h2>
+					<h2 className="heading-secondary mt-10">
+						Choose Your Space:
+					</h2>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-6 my-6">
 						{QUESTION_CATEGORIES.map((category) => (
 							<Card
 								key={category.id}
@@ -53,10 +55,10 @@ export default function Home() {
 								}
 							>
 								<CardHeader className="flex-grow">
-									<CardTitle className="text-xl mb-1">
+									<CardTitle className="sm:text-xl mb-1">
 										{category.title}
 									</CardTitle>
-									<CardDescription className="text-lg leading-normal">
+									<CardDescription className="sm:text-lg leading-normal">
 										{category.description}
 									</CardDescription>
 								</CardHeader>
@@ -77,7 +79,7 @@ export default function Home() {
 					</h2>
 					<p className="text-lg">Select a mode:</p>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-6 my-6">
 						<Card
 							className="flex flex-col cursor-pointer"
 							onClick={() => {
