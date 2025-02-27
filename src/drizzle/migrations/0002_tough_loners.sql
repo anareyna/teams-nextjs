@@ -1,0 +1,1 @@
+ALTER TABLE "shared_questions" ADD COLUMN "guest_id" text NOT NULL;

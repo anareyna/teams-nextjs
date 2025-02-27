@@ -6,6 +6,7 @@ import { Question } from "@/types/types";
 import { Share, Shuffle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
+import useGuestId from "@/app/hooks/useGuestId";
 import QuestionControls from "@/components/QuestionControls/QuestionControls";
 import SharedBlock from "@/components/SharedBlock/SharedBlock";
 import { generateSharedUrl } from "@/lib/actions";
@@ -29,6 +30,7 @@ export default function QuestionListClient({
 	const [shareUrl, setShareUrl] = useState("");
 	const [showShareButton, setShowShareButton] = useState(true);
 	const [isSharedUrlVisible, setIsSharedUrlVisible] = useState(false);
+	const guestId = useGuestId();
 
 	const fetchQuestions = useCallback(async () => {
 		setIsFetchingLoading(true);
@@ -58,7 +60,7 @@ export default function QuestionListClient({
 		setIsShareLoading(true);
 		const questionIds = questions.map((q) => q.id);
 		const mode = useFlipCards ? "mystery" : "list";
-		const slug = await generateSharedUrl(questionIds, mode);
+		const slug = await generateSharedUrl(questionIds, mode, guestId ?? "");
 		setShareUrl(`${window.location.origin}/shared/${slug}`);
 		setShowShareButton(false);
 		setIsSharedUrlVisible(true);

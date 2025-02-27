@@ -8,8 +8,13 @@ import { POST } from "./route";
 vi.mock("@/drizzle/db", () => ({
 	db: {
 		insert: vi.fn().mockReturnValue({
-			values: vi.fn().mockResolvedValue(undefined),
+			values: vi.fn().mockResolvedValue([{ slug: "abc123" }]),
 		}),
+		query: {
+			sharedQuestionsTable: {
+				findFirst: vi.fn().mockResolvedValue(null),
+			},
+		},
 	},
 }));
 
@@ -38,6 +43,7 @@ describe("POST /api/questions/save", () => {
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
 					mode: "list",
+					guestId: "guest123",
 				}),
 			}
 		);
@@ -53,6 +59,8 @@ describe("POST /api/questions/save", () => {
 			expect.objectContaining({
 				slug: "abc123",
 				questionIds: ["q1", "q2", "q3"],
+				mode: "list",
+				guestId: "guest123",
 				createdAt: expect.any(Date),
 				updatedAt: expect.any(Date),
 			})
@@ -106,6 +114,7 @@ describe("POST /api/questions/save", () => {
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
 					mode: "random",
+					guestId: "guest123",
 				}),
 			}
 		);
@@ -126,6 +135,7 @@ describe("POST /api/questions/save", () => {
 				method: "POST",
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
+					guestId: "guest123",
 				}),
 			}
 		);
@@ -151,6 +161,7 @@ describe("POST /api/questions/save", () => {
 				body: JSON.stringify({
 					questionIds: ["q1", "q2", "q3"],
 					mode: "list",
+					guestId: "guest123",
 				}),
 			}
 		);
