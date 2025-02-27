@@ -72,10 +72,12 @@ describe("QuestionListClient", () => {
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
+		const shareButton = await screen.findByRole("button", {
+			name: /share this list/i,
+		});
 
-		fireEvent.click(
-			screen.getByRole("button", { name: /share this list/i })
-		);
+		expect(shareButton).not.toBeDisabled();
+		fireEvent.click(shareButton);
 
 		await waitFor(() =>
 			expect(screen.getByText(/shared\/abc123/i)).toBeInTheDocument()

@@ -3,7 +3,7 @@
 import QuestionList from "@/components/QuestionList/QuestionList";
 import { Button } from "@/components/ui/button";
 import { Question } from "@/types/types";
-import { Share, Shuffle } from "lucide-react";
+import { Loader2, Share, Shuffle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import useGuestId from "@/app/hooks/useGuestId";
@@ -121,7 +121,11 @@ export default function QuestionListClient({
 					size="lg"
 					disabled={isFetchingLoading}
 				>
-					<Shuffle />
+					{isFetchingLoading ? (
+						<Loader2 className="animate-spin" />
+					) : (
+						<Shuffle />
+					)}
 					{numberDisplayQuestions > 1
 						? "New Questions"
 						: "Another Question"}
@@ -132,8 +136,13 @@ export default function QuestionListClient({
 						onClick={handleShareButtonClick}
 						variant="secondary"
 						size="lg"
+						disabled={isFetchingLoading || isShareLoading}
 					>
-						<Share />
+						{isShareLoading ? (
+							<Loader2 className="animate-spin" />
+						) : (
+							<Share />
+						)}
 						Share this list
 					</Button>
 				)}

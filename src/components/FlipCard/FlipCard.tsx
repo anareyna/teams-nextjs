@@ -2,17 +2,18 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CardProps } from "@/types/types";
-import { MessageCircleQuestion } from "lucide-react";
+import { Loader2, MessageCircleQuestion } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { Skeleton } from "../ui/skeleton";
 
 export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 	const [isFlipped, setIsFlipped] = useState(false);
 
 	return (
 		<motion.div
-			className="relative cursor-pointer"
+			className={`relative cursor-pointer ${
+				isLoadingCard ? "pointer-events-none" : ""
+			}`}
 			onClick={() => setIsFlipped(!isFlipped)}
 			initial={false}
 			animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -27,8 +28,14 @@ export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 			>
 				<Card className="absolute w-full flex justify-center p-8 min-h-[150px] sm:min-h-[250px] bg-primary dark:bg-card text-card dark:text-card-foreground">
 					<CardContent className="sm:text-xl font-semibold flex flex-col justify-center items-center p-0">
-						<MessageCircleQuestion className="h-12 w-12 mb-2" />
-						Question {index + 1}
+						{isLoadingCard ? (
+							<Loader2 className="animate-spin h-12 w-12 opacity-80" />
+						) : (
+							<>
+								<MessageCircleQuestion className="h-12 w-12 mb-2" />
+								Question {index + 1}
+							</>
+						)}
 					</CardContent>
 				</Card>
 			</motion.div>
@@ -43,16 +50,9 @@ export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 			>
 				<Card className="flex justify-center items-center p-8 min-h-[150px] sm:min-h-[250px] dark:bg-card-foreground dark:text-primary">
 					<CardContent className="text-center sm:text-xl p-0">
-						{isLoadingCard ? (
-							<Skeleton
-								data-testid="question-card-skeleton"
-								className="w-full h-[20px] rounded-full"
-							/>
-						) : (
-							<p className="tracking-tight sm:text-xl font-semibold">
-								{text}
-							</p>
-						)}
+						<p className="tracking-tight sm:text-xl font-semibold">
+							{text}
+						</p>
 					</CardContent>
 				</Card>
 			</motion.div>
