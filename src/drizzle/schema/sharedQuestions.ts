@@ -7,6 +7,7 @@ export const sharedQuestionsTable = pgTable("shared_questions", {
 	questionIds: jsonb("question_ids").notNull(),
 	mode: text("mode").notNull().default("list"),
 	guestId: text("guest_id").notNull(),
+	flippedCards: jsonb("flipped_cards").default([]),
 	createdAt,
 	updatedAt,
 });

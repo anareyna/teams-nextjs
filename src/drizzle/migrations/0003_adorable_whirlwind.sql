@@ -1,0 +1,1 @@
+ALTER TABLE "shared_questions" ADD COLUMN "flipped_cards" jsonb DEFAULT '{}'::jsonb;

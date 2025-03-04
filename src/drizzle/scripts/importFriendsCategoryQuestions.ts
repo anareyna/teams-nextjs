@@ -7,7 +7,7 @@ import { questionsTable } from "../schema/questions";
 async function importFriendsQuestions() {
 	const filePath = path.join(
 		process.cwd(),
-		"./src/data/friends-questions.json"
+		"./src/data/friends-questions.local.json"
 	);
 	const rawData = fs.readFileSync(filePath, "utf-8");
 	const questions = JSON.parse(rawData);
