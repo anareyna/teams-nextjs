@@ -1,5 +1,5 @@
-import FlipCardList from "@/components/FlipCardList/FlipCardList";
-import QuestionList from "@/components/QuestionList/QuestionList";
+import FlipCardGrid from "@/components/FlipCardGrid/FlipCardGrid";
+import ListCardGrid from "@/components/ListCardGrid/ListCardGrid";
 import { notFound } from "next/navigation";
 
 export default async function SharedPage({
@@ -29,15 +29,9 @@ export default async function SharedPage({
 			</p>
 
 			{mode === "mystery" ? (
-				<FlipCardList
-					numberOfQuestions={questions.length}
-					questions={questions}
-				/>
+				<FlipCardGrid questions={questions} />
 			) : (
-				<QuestionList
-					numberOfQuestions={questions.length}
-					questions={questions}
-				/>
+				<ListCardGrid questions={questions} />
 			)}
 		</div>
 	);

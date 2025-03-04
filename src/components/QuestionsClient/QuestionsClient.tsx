@@ -1,29 +1,30 @@
 "use client";
 
-import QuestionList from "@/components/QuestionList/QuestionList";
 import { Button } from "@/components/ui/button";
-import { Question } from "@/types/types";
+import { Question, QuestionsClientProps } from "@/types/types";
 import { Loader2, Share, Shuffle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import useGuestId from "@/app/hooks/useGuestId";
+import ListCardGrid from "@/components/ListCardGrid/ListCardGrid";
 import QuestionControls from "@/components/QuestionControls/QuestionControls";
 import SharedBlock from "@/components/SharedBlock/SharedBlock";
 import { generateSharedUrl } from "@/lib/actions";
-import { DEFAULT_QUESTION_COUNT } from "@/lib/constants";
-import FlipCardList from "../FlipCardList/FlipCardList";
+import {
+	DEFAULT_INITIAL_LIST_COUNT,
+	DEFAULT_INITIAL_MYSTERY_COUNT,
+} from "@/lib/constants";
+import FlipCardGrid from "../FlipCardGrid/FlipCardGrid";
 
-export default function QuestionListClient({
-	initialQuestionCount = DEFAULT_QUESTION_COUNT,
+export default function QuestionsClient({
+	mode,
 	categoryId,
-	useFlipCards,
-}: {
-	initialQuestionCount?: number;
-	categoryId: string;
-	useFlipCards?: boolean;
-}) {
-	const [numberDisplayQuestions, setNumberDisplayQuestions] =
-		useState(initialQuestionCount);
+}: QuestionsClientProps) {
+	const [numberDisplayQuestions, setNumberDisplayQuestions] = useState(
+		mode === "mystery"
+			? DEFAULT_INITIAL_MYSTERY_COUNT
+			: DEFAULT_INITIAL_LIST_COUNT
+	);
 	const [questions, setQuestions] = useState<Question[]>([]);
 	const [isFetchingLoading, setIsFetchingLoading] = useState(true);
 	const [isShareLoading, setIsShareLoading] = useState(false);
@@ -59,7 +60,6 @@ export default function QuestionListClient({
 	const handleShareButtonClick = async () => {
 		setIsShareLoading(true);
 		const questionIds = questions.map((q) => q.id);
-		const mode = useFlipCards ? "mystery" : "list";
 		const slug = await generateSharedUrl(questionIds, mode, guestId ?? "");
 		setShareUrl(`${window.location.origin}/shared/${slug}`);
 		setShowShareButton(false);
@@ -93,15 +93,13 @@ export default function QuestionListClient({
 				onDecrease={handleDecreaseQuestionsClick}
 			/>
 
-			{useFlipCards ? (
-				<FlipCardList
-					numberOfQuestions={numberDisplayQuestions}
+			{mode === "mystery" ? (
+				<FlipCardGrid
 					questions={questions}
 					isLoading={isFetchingLoading}
 				/>
 			) : (
-				<QuestionList
-					numberOfQuestions={numberDisplayQuestions}
+				<ListCardGrid
 					questions={questions}
 					isLoading={isFetchingLoading}
 				/>

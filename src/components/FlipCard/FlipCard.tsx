@@ -6,13 +6,13 @@ import { Loader2, MessageCircleQuestion } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
+export default function FlipCard({ text, index, isLoading }: CardProps) {
 	const [isFlipped, setIsFlipped] = useState(false);
 
 	return (
 		<motion.div
 			className={`relative cursor-pointer ${
-				isLoadingCard ? "pointer-events-none" : ""
+				isLoading ? "pointer-events-none" : ""
 			}`}
 			onClick={() => setIsFlipped(!isFlipped)}
 			initial={false}
@@ -28,7 +28,7 @@ export default function FlipCard({ text, index, isLoadingCard }: CardProps) {
 			>
 				<Card className="absolute w-full flex justify-center p-8 min-h-[150px] sm:min-h-[250px] bg-primary dark:bg-card text-card dark:text-card-foreground">
 					<CardContent className="sm:text-xl font-semibold flex flex-col justify-center items-center p-0">
-						{isLoadingCard ? (
+						{isLoading ? (
 							<Loader2 className="animate-spin h-12 w-12 opacity-80" />
 						) : (
 							<>

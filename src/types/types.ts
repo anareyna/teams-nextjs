@@ -5,17 +5,25 @@ export type Question = {
 	text: string;
 };
 
+export type QuestionMode = (typeof QUESTION_MODES)[number];
+
+export type QuestionsClientProps = {
+	categoryId: string;
+	mode: QuestionMode;
+};
+
 export type CardProps = {
 	text: string;
 	index: number;
-	isLoadingCard?: boolean;
+	isLoading?: boolean;
 };
 
-export type QuestionListProps = {
-	title?: string;
-	numberOfQuestions: number;
+export type ListCardGridProps = {
 	questions: Question[];
 	isLoading?: boolean;
 };
 
-export type QuestionMode = (typeof QUESTION_MODES)[number];
+export type FlipCardGridProps = {
+	questions: Question[];
+	isLoading?: boolean;
+};

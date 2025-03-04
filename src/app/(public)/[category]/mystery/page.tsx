@@ -1,4 +1,4 @@
-import QuestionListClient from "@/components/QuestionListClient/QuestionListClient";
+import QuestionsClient from "@/components/QuestionsClient/QuestionsClient";
 import { getSelectedCategoryData } from "@/lib/helpers";
 
 export default async function MysteryPage({
@@ -22,11 +22,7 @@ export default async function MysteryPage({
 	return (
 		<div>
 			<h1 className="heading-primary">{categoryData.title}</h1>
-			<QuestionListClient
-				initialQuestionCount={8}
-				categoryId={categoryData.id}
-				useFlipCards={true}
-			/>
+			<QuestionsClient categoryId={categoryData.id} mode="mystery" />
 		</div>
 	);
 }

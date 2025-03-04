@@ -1,4 +1,6 @@
-export const DEFAULT_QUESTION_COUNT = 3;
+export const DEFAULT_INITIAL_LIST_COUNT = 3;
+export const DEFAULT_INITIAL_MYSTERY_COUNT = 8;
+
 export const QUESTION_CATEGORIES = [
 	{
 		id: "5987b68f-9661-4221-8772-2af2e389af4a",

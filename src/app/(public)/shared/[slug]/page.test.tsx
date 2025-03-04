@@ -11,7 +11,7 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("@/components/QuestionList/QuestionList", () => ({
 	default: vi.fn(({ questions }) => (
-		<div data-testid="question-list">
+		<div data-testid="list-card-grid">
 			{questions.map((q: Question) => (
 				<div key={q.id}>{q.text}</div>
 			))}
@@ -62,7 +62,7 @@ it("should pass correct props to QuestionList component", async () => {
 	const mockParams = Promise.resolve({ slug: "abc123", mode: "list" });
 	render(await SharedPage({ params: mockParams }));
 
-	const questionList = screen.getByTestId("question-list");
+	const questionList = screen.getByTestId("list-card-grid");
 	expect(questionList).toBeInTheDocument();
 
 	mockQuestions.forEach((question) => {

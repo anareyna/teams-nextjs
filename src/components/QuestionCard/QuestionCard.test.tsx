@@ -10,7 +10,7 @@ describe("QuestionCard component", () => {
 	});
 
 	it("renders the loading state", () => {
-		render(<QuestionCard isLoadingCard={true} index={0} text="anything" />);
+		render(<QuestionCard isLoading={true} index={0} text="anything" />);
 		const skeleton = screen.getByTestId("question-card-skeleton");
 		expect(skeleton).toHaveClass("w-full h-[20px] rounded-full");
 		expect(screen.queryByText("anything")).not.toBeInTheDocument();

@@ -1,16 +1,20 @@
 import * as actions from "@/lib/actions";
-import { QUESTION_CATEGORIES } from "@/lib/constants";
+import {
+	DEFAULT_INITIAL_LIST_COUNT,
+	DEFAULT_INITIAL_MYSTERY_COUNT,
+	QUESTION_CATEGORIES,
+} from "@/lib/constants";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import QuestionListClient from "./QuestionListClient";
+import QuestionsClient from "./QuestionsClient";
 
 vi.spyOn(actions, "generateSharedUrl").mockResolvedValue("abc123");
 
-describe("QuestionListClient", () => {
+describe("QuestionsClient", () => {
 	it("fetches and displays questions on load", async () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={3}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
@@ -19,13 +23,16 @@ describe("QuestionListClient", () => {
 			expect(screen.getByText("q1")).toBeInTheDocument();
 			expect(screen.getByText("q2")).toBeInTheDocument();
 			expect(screen.getByText("q3")).toBeInTheDocument();
+			expect(screen.getAllByRole("listitem")).toHaveLength(
+				DEFAULT_INITIAL_LIST_COUNT
+			);
 		});
 	});
 
 	it("fetches new questions when shuffle button is clicked", async () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={2}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
@@ -39,8 +46,8 @@ describe("QuestionListClient", () => {
 
 	it("increases the number of questions when + is clicked", async () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={2}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
@@ -52,8 +59,8 @@ describe("QuestionListClient", () => {
 
 	it("decreases the number of questions when - is clicked", async () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={3}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
@@ -67,8 +74,8 @@ describe("QuestionListClient", () => {
 
 	it("generates and displays a shareable URL", async () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={3}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
@@ -84,26 +91,28 @@ describe("QuestionListClient", () => {
 		);
 	});
 
-	it("should render QuestionCardList component when useFlipCards prop is false or not present", () => {
+	it("should render QuestionCardList component when mode prop is 'list'", () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={3}
+			<QuestionsClient
+				mode="list"
 				categoryId={QUESTION_CATEGORIES[0].id}
 			/>
 		);
-		expect(screen.queryByTestId("flip-card-list")).not.toBeInTheDocument();
-		expect(screen.getByTestId("question-list")).toBeInTheDocument();
+		expect(screen.queryByTestId("flip-card-grid")).not.toBeInTheDocument();
+		expect(screen.getByTestId("list-card-grid")).toBeInTheDocument();
 	});
 
-	it("should render FlipCardList component when useFlipCards prop is true", () => {
+	it("should render FlipCardList component when mode prop is 'mystery'", () => {
 		render(
-			<QuestionListClient
-				initialQuestionCount={3}
+			<QuestionsClient
+				mode="mystery"
 				categoryId={QUESTION_CATEGORIES[0].id}
-				useFlipCards={true}
 			/>
 		);
-		expect(screen.queryByTestId("question-list")).not.toBeInTheDocument();
-		expect(screen.getByTestId("flip-card-list")).toBeInTheDocument();
+		expect(screen.queryByTestId("list-card-grid")).not.toBeInTheDocument();
+		expect(screen.getByTestId("flip-card-grid")).toBeInTheDocument();
+		expect(screen.getAllByRole("listitem")).toHaveLength(
+			DEFAULT_INITIAL_MYSTERY_COUNT
+		);
 	});
 });

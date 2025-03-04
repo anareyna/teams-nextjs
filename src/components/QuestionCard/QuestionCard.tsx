@@ -2,11 +2,7 @@ import { CardProps } from "@/types/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
-export default function QuestionCard({
-	text,
-	index,
-	isLoadingCard,
-}: CardProps) {
+export default function QuestionCard({ text, index, isLoading }: CardProps) {
 	return (
 		<Card role="listitem" data-testid={`question-card-${index}`}>
 			<CardHeader className="pb-2">
@@ -14,8 +10,8 @@ export default function QuestionCard({
 					Question {index + 1}
 				</CardTitle>
 			</CardHeader>
-			<CardContent className={isLoadingCard ? "space-y-3" : ""}>
-				{isLoadingCard ? (
+			<CardContent className={isLoading ? "space-y-3" : ""}>
+				{isLoading ? (
 					<>
 						<Skeleton
 							data-testid="question-card-skeleton"
