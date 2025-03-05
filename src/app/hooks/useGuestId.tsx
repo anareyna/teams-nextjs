@@ -4,18 +4,23 @@ import { useEffect, useState } from "react";
 
 export default function useGuestId() {
 	const [guestId, setGuestId] = useState<string | null>(null);
-	const storageName = "iceq_guestId";
 
 	useEffect(() => {
 		if (typeof window === "undefined") return;
 
-		let storedGuestId = localStorage.getItem(storageName);
-		if (!storedGuestId) {
-			storedGuestId = crypto.randomUUID();
-			localStorage.setItem(storageName, storedGuestId);
+		async function getGuestId() {
+			try {
+				const response = await fetch(
+					`${process.env.NEXT_PUBLIC_BASE_URL}/api/guest-id`
+				);
+				const data = await response.json();
+				setGuestId(data.guestId);
+			} catch (error) {
+				console.error("Error fetching guestId:", error);
+			}
 		}
 
-		setGuestId(storedGuestId);
+		getGuestId();
 	}, []);
 
 	return guestId;

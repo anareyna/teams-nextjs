@@ -68,4 +68,8 @@ export const questionsHandlers = [
 
 		return HttpResponse.json({ slug: "abc123", mode });
 	}),
+
+	http.get("/api/guest-id", () => {
+		return HttpResponse.json({ guestId: "mocked-guest-id" });
+	}),
 ];
