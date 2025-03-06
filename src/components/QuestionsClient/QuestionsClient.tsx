@@ -86,12 +86,45 @@ export default function QuestionsClient({
 
 	return (
 		<div>
-			<QuestionControls
-				className="mb-6"
-				numberOfQuestions={numberDisplayQuestions}
-				onIncrease={handleIncreaseQuestionsClick}
-				onDecrease={handleDecreaseQuestionsClick}
-			/>
+			<div className="flex justify-between gap-4 flex-wrap mb-6">
+				<QuestionControls
+					numberOfQuestions={numberDisplayQuestions}
+					onIncrease={handleIncreaseQuestionsClick}
+					onDecrease={handleDecreaseQuestionsClick}
+				/>
+				<div className="flex gap-4">
+					<Button
+						onClick={handleNewQuestionsButtonClick}
+						size="lg"
+						disabled={isFetchingLoading}
+					>
+						{isFetchingLoading ? (
+							<Loader2 className="animate-spin" />
+						) : (
+							<Shuffle />
+						)}
+						{numberDisplayQuestions > 1
+							? "New Questions"
+							: "Another Question"}
+					</Button>
+
+					{showShareButton && (
+						<Button
+							onClick={handleShareButtonClick}
+							variant="secondary"
+							size="lg"
+							disabled={isFetchingLoading || isShareLoading}
+						>
+							{isShareLoading ? (
+								<Loader2 className="animate-spin" />
+							) : (
+								<Share />
+							)}
+							Share list
+						</Button>
+					)}
+				</div>
+			</div>
 
 			{mode === "mystery" ? (
 				<FlipCardGrid
@@ -112,39 +145,6 @@ export default function QuestionsClient({
 					shareUrl={shareUrl}
 				/>
 			)}
-
-			<div className="flex justify-center gap-6 mt-10">
-				<Button
-					onClick={handleNewQuestionsButtonClick}
-					size="lg"
-					disabled={isFetchingLoading}
-				>
-					{isFetchingLoading ? (
-						<Loader2 className="animate-spin" />
-					) : (
-						<Shuffle />
-					)}
-					{numberDisplayQuestions > 1
-						? "New Questions"
-						: "Another Question"}
-				</Button>
-
-				{showShareButton && (
-					<Button
-						onClick={handleShareButtonClick}
-						variant="secondary"
-						size="lg"
-						disabled={isFetchingLoading || isShareLoading}
-					>
-						{isShareLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<Share />
-						)}
-						Share this list
-					</Button>
-				)}
-			</div>
 		</div>
 	);
 }

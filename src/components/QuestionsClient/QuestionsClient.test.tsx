@@ -80,7 +80,7 @@ describe("QuestionsClient", () => {
 			/>
 		);
 		const shareButton = await screen.findByRole("button", {
-			name: /share this list/i,
+			name: /share list/i,
 		});
 
 		expect(shareButton).not.toBeDisabled();

@@ -14,7 +14,7 @@ export default function FlipCardGrid({
 		: questions;
 	return (
 		<div
-			className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6"
+			className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-6"
 			data-testid="flip-card-grid"
 		>
 			{items.map((q, i) => (
