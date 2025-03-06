@@ -1,13 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QUESTION_CATEGORIES } from "@/lib/constants";
 import { getSelectedCategoryData } from "@/lib/helpers";
 
@@ -41,30 +34,39 @@ export default function Home() {
 						IceQ helps spark meaningful conversations, whether
 						you're with your team, friends, or a close group.
 					</p>
-					<h2 className="heading-secondary mt-10">
+					<h2 className="heading-secondary mt-5 sm:mt-10">
 						Choose Your Space:
 					</h2>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-10 my-6">
 						{QUESTION_CATEGORIES.map((category) => (
 							<Card
 								key={category.id}
-								className="flex flex-col cursor-pointer"
+								className="flex flex-col cursor-pointer hover:scale-[1.05] transition-all"
 								onClick={() =>
 									setSelectedCategorySlug(category.slug)
 								}
 							>
-								<CardHeader className="flex-grow">
-									<CardTitle className="sm:text-xl mb-1">
+								<CardHeader className="pb-4">
+									<CardTitle className="sm:text-xl">
 										{category.title}
 									</CardTitle>
-									<CardDescription className="sm:text-lg leading-normal">
-										{category.description}
-									</CardDescription>
 								</CardHeader>
-
-								<CardContent className="flex justify-end">
-									<Button size="lg">Select</Button>
+								<div
+									className="overflow-hidden w-full h-40"
+									style={{
+										backgroundImage: `url(${category.image})`,
+										backgroundSize: "cover",
+										backgroundPosition: "top",
+									}}
+								></div>
+								<CardContent className="pt-4">
+									<p className="sm:text-lg">
+										{category.description}
+									</p>
+									<div className="flex justify-end mt-6">
+										<Button size="lg">Select</Button>
+									</div>
 								</CardContent>
 							</Card>
 						))}
@@ -79,51 +81,54 @@ export default function Home() {
 					</h2>
 					<p className="text-lg">Select a mode:</p>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-6 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-10 my-6">
 						<Card
-							className="flex flex-col cursor-pointer"
+							className="flex flex-col cursor-pointer hover:scale-[1.05] transition-all"
 							onClick={() => {
 								router.push(`/${selectedCategorySlug}/list`);
 							}}
 						>
-							<CardHeader className="flex-grow">
-								<CardTitle className="text-xl mb-1">
+							<CardHeader className="pb-4">
+								<CardTitle className="text-xl">
 									🗒 List Mode
 								</CardTitle>
-								<CardDescription className="text-lg leading-normal">
-									Start with 3 questions (adjustable by the
-									host). All questions are visible upfront,
-									and team members can pick the ones they're
-									most comfortable answering.
-								</CardDescription>
 							</CardHeader>
 
-							<CardContent className="flex justify-end">
-								<Button size="lg">Select</Button>
+							<CardContent>
+								<p className="sm:text-lg">
+									All questions are visible upfront, and team
+									members can pick the ones they're most
+									comfortable answering.
+								</p>
+								<div className="flex justify-end mt-6">
+									<Button size="lg">Select</Button>
+								</div>
 							</CardContent>
 						</Card>
 
 						<Card
-							className="flex flex-col cursor-pointer"
+							className="flex flex-col cursor-pointer hover:scale-[1.05] transition-all"
 							onClick={() => {
 								router.push(`/${selectedCategorySlug}/mystery`);
 							}}
 						>
-							<CardHeader className="flex-grow">
-								<CardTitle className="text-xl mb-1">
+							<CardHeader className="pb-4">
+								<CardTitle className="text-xl">
 									🎲 Mystery mode
 								</CardTitle>
-								<CardDescription className="text-lg leading-normal">
+							</CardHeader>
+
+							<CardContent>
+								<p className="sm:text-lg">
 									Questions stay hidden until revealed by the
 									host. Choose how many questions to include
 									and uncover them together during the
 									session!
-								</CardDescription>
-							</CardHeader>
-
-							<CardFooter className="flex justify-end">
-								<Button size="lg">Select</Button>
-							</CardFooter>
+								</p>
+								<div className="flex justify-end mt-6">
+									<Button size="lg">Select</Button>
+								</div>
+							</CardContent>
 						</Card>
 					</div>
 				</div>

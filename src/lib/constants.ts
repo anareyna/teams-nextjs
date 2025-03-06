@@ -8,6 +8,7 @@ export const QUESTION_CATEGORIES = [
 		title: "💼 Team Connect",
 		description:
 			"Perfect for colleagues and professional settings. Get to know your team in a fun way.",
+		image: "/team-connect.png",
 	},
 	{
 		id: "e5a0d881-1ab3-4e18-a226-d47b8170d117",
@@ -15,6 +16,7 @@ export const QUESTION_CATEGORIES = [
 		title: "🤗 Close Connections",
 		description:
 			"Great for friends and close groups. Strengthen your bond and create lasting memories.",
+		image: "/close-connections.png",
 	},
 ] as const;
 
