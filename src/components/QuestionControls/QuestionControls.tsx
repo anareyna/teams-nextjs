@@ -16,13 +16,12 @@ export default function QuestionControls({
 	return (
 		<div className={className}>
 			<div className="flex gap-4 items-center sm:text-lg">
-				Display
+				{numberOfQuestions > 1 ? "Questions:" : "Question:"}
 				<Button onClick={onDecrease} disabled={numberOfQuestions === 1}>
 					-
 				</Button>
 				{numberOfQuestions}
 				<Button onClick={onIncrease}>+</Button>
-				{numberOfQuestions > 1 ? "questions:" : "question:"}
 			</div>
 		</div>
 	);
