@@ -3,17 +3,17 @@
 import { Button } from "@/components/ui/button";
 import { Question, QuestionsClientProps } from "@/types/types";
 import { Loader2, Share, Shuffle } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
 import useGuestId from "@/app/hooks/useGuestId";
 import ListCardGrid from "@/components/ListCardGrid/ListCardGrid";
 import QuestionControls from "@/components/QuestionControls/QuestionControls";
-import SharedBlock from "@/components/SharedBlock/SharedBlock";
 import { generateSharedUrl } from "@/lib/actions";
 import {
 	DEFAULT_INITIAL_LIST_COUNT,
 	DEFAULT_INITIAL_MYSTERY_COUNT,
 } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 import FlipCardGrid from "../FlipCardGrid/FlipCardGrid";
 
 export default function QuestionsClient({
@@ -28,10 +28,9 @@ export default function QuestionsClient({
 	const [questions, setQuestions] = useState<Question[]>([]);
 	const [isFetchingLoading, setIsFetchingLoading] = useState(true);
 	const [isShareLoading, setIsShareLoading] = useState(false);
-	const [shareUrl, setShareUrl] = useState("");
-	const [showShareButton, setShowShareButton] = useState(true);
-	const [isSharedUrlVisible, setIsSharedUrlVisible] = useState(false);
+	const [isPending, startTransition] = useTransition();
 	const guestId = useGuestId();
+	const router = useRouter();
 
 	const fetchQuestions = useCallback(async () => {
 		setIsFetchingLoading(true);
@@ -54,34 +53,26 @@ export default function QuestionsClient({
 
 	const handleNewQuestionsButtonClick = () => {
 		fetchQuestions();
-		resetShareState();
 	};
 
 	const handleShareButtonClick = async () => {
+		console.log("click");
 		setIsShareLoading(true);
 		const questionIds = questions.map((q) => q.id);
 		const slug = await generateSharedUrl(questionIds, mode, guestId ?? "");
-		setShareUrl(`${window.location.origin}/shared/${slug}`);
-		setShowShareButton(false);
-		setIsSharedUrlVisible(true);
-		setIsShareLoading(false);
-	};
+		const newShareUrl = `${window.location.origin}/shared/${slug}`;
 
-	const resetShareState = () => {
-		if (isSharedUrlVisible) {
-			setShowShareButton(true);
-			setIsSharedUrlVisible(false);
-		}
+		startTransition(() => {
+			router.push(newShareUrl);
+		});
 	};
 
 	const handleIncreaseQuestionsClick = () => {
 		setNumberDisplayQuestions((prev) => prev + 1);
-		resetShareState();
 	};
 
 	const handleDecreaseQuestionsClick = () => {
 		setNumberDisplayQuestions((prev) => (prev > 1 ? prev - 1 : 1));
-		resetShareState();
 	};
 
 	return (
@@ -108,21 +99,19 @@ export default function QuestionsClient({
 							: "Another Question"}
 					</Button>
 
-					{showShareButton && (
-						<Button
-							onClick={handleShareButtonClick}
-							variant="secondary"
-							size="lg"
-							disabled={isFetchingLoading || isShareLoading}
-						>
-							{isShareLoading ? (
-								<Loader2 className="animate-spin" />
-							) : (
-								<Share />
-							)}
-							Share list
-						</Button>
-					)}
+					<Button
+						onClick={handleShareButtonClick}
+						variant="secondary"
+						size="lg"
+						disabled={isFetchingLoading || isShareLoading}
+					>
+						{isShareLoading || isPending ? (
+							<Loader2 className="animate-spin" />
+						) : (
+							<Share />
+						)}
+						Share this list
+					</Button>
 				</div>
 			</div>
 
@@ -135,14 +124,6 @@ export default function QuestionsClient({
 				<ListCardGrid
 					questions={questions}
 					isLoading={isFetchingLoading}
-				/>
-			)}
-
-			{isSharedUrlVisible && (
-				<SharedBlock
-					isLoading={isShareLoading}
-					numberOfQuestions={numberDisplayQuestions}
-					shareUrl={shareUrl}
 				/>
 			)}
 		</div>

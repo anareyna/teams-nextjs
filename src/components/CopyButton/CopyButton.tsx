@@ -1,3 +1,5 @@
+"use client";
+import { Clipboard } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
@@ -18,7 +20,8 @@ export default function CopyButton({ text, className }: CopyButtonProps) {
 		}
 	}
 	return (
-		<Button className={className} onClick={handleCopy}>
+		<Button className={className} onClick={handleCopy} variant="secondary">
+			<Clipboard />
 			{isCopied ? "Copied!" : "Copy"}
 		</Button>
 	);

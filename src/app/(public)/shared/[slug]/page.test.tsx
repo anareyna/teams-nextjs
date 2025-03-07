@@ -9,7 +9,7 @@ vi.mock("next/navigation", () => ({
 	notFound: vi.fn(),
 }));
 
-vi.mock("@/components/QuestionList/QuestionList", () => ({
+vi.mock("@/components/ListCardGrid/ListCardGrid", () => ({
 	default: vi.fn(({ questions }) => (
 		<div data-testid="list-card-grid">
 			{questions.map((q: Question) => (
@@ -58,12 +58,12 @@ it("should handle API errors gracefully", async () => {
 	}
 });
 
-it("should pass correct props to QuestionList component", async () => {
+it("should pass correct props to ListCardGrid component", async () => {
 	const mockParams = Promise.resolve({ slug: "abc123", mode: "list" });
 	render(await SharedPage({ params: mockParams }));
 
-	const questionList = screen.getByTestId("list-card-grid");
-	expect(questionList).toBeInTheDocument();
+	const listCardGrid = screen.getByTestId("list-card-grid");
+	expect(listCardGrid).toBeInTheDocument();
 
 	mockQuestions.forEach((question) => {
 		expect(screen.getByText(question.text)).toBeInTheDocument();

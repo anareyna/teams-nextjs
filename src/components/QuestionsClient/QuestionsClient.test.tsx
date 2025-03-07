@@ -1,16 +1,25 @@
-import * as actions from "@/lib/actions";
 import {
 	DEFAULT_INITIAL_LIST_COUNT,
 	DEFAULT_INITIAL_MYSTERY_COUNT,
 	QUESTION_CATEGORIES,
 } from "@/lib/constants";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import QuestionsClient from "./QuestionsClient";
 
-vi.spyOn(actions, "generateSharedUrl").mockResolvedValue("abc123");
+const mockRouterPush = vi.fn();
+
+vi.mock("next/navigation", () => ({
+	useRouter: () => ({
+		push: mockRouterPush,
+	}),
+}));
 
 describe("QuestionsClient", () => {
+	beforeAll(() => {
+		process.env.NEXT_PUBLIC_BASE_URL = "";
+	});
+
 	it("fetches and displays questions on load", async () => {
 		render(
 			<QuestionsClient
@@ -72,25 +81,6 @@ describe("QuestionsClient", () => {
 		);
 	});
 
-	it("generates and displays a shareable URL", async () => {
-		render(
-			<QuestionsClient
-				mode="list"
-				categoryId={QUESTION_CATEGORIES[0].id}
-			/>
-		);
-		const shareButton = await screen.findByRole("button", {
-			name: /share list/i,
-		});
-
-		expect(shareButton).not.toBeDisabled();
-		fireEvent.click(shareButton);
-
-		await waitFor(() =>
-			expect(screen.getByText(/shared\/abc123/i)).toBeInTheDocument()
-		);
-	});
-
 	it("should render QuestionCardList component when mode prop is 'list'", () => {
 		render(
 			<QuestionsClient
@@ -113,6 +103,69 @@ describe("QuestionsClient", () => {
 		expect(screen.getByTestId("flip-card-grid")).toBeInTheDocument();
 		expect(screen.getAllByRole("listitem")).toHaveLength(
 			DEFAULT_INITIAL_MYSTERY_COUNT
+		);
+	});
+
+	it("shows loading state when fetching questions", async () => {
+		render(
+			<QuestionsClient
+				mode="list"
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
+
+		expect(
+			screen.getByRole("button", { name: /new questions/i })
+		).toHaveAttribute("disabled");
+
+		await waitFor(() => {
+			expect(
+				screen.getByRole("button", { name: /new questions/i })
+			).not.toHaveAttribute("disabled");
+		});
+	});
+
+	it("shows loading state when share button is clicked", async () => {
+		render(
+			<QuestionsClient
+				mode="list"
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
+
+		const shareButton = await screen.findByRole("button", {
+			name: /share this list/i,
+		});
+
+		fireEvent.click(shareButton);
+
+		expect(shareButton).toHaveAttribute("disabled");
+
+		// Wait for action to complee
+		await waitFor(() => {
+			expect(mockRouterPush).toHaveBeenCalled();
+		});
+	});
+
+	it("generates and navigates to a shareable URL", async () => {
+		render(
+			<QuestionsClient
+				mode="list"
+				categoryId={QUESTION_CATEGORIES[0].id}
+			/>
+		);
+
+		const shareButton = await screen.findByRole("button", {
+			name: /share this list/i,
+		});
+
+		expect(shareButton).not.toBeDisabled();
+		fireEvent.click(shareButton);
+
+		await waitFor(() =>
+			expect(mockRouterPush).toHaveBeenCalledWith(
+				expect.stringContaining("/shared/abc123")
+			)
 		);
 	});
 });
