@@ -9,7 +9,7 @@ export default function ListCardGrid({
 	const items = isLoading
 		? Array.from(
 				{ length: questions.length || DEFAULT_INITIAL_LIST_COUNT },
-				() => ({ id: null, text: null })
+				() => ({ id: "", text: "" })
 		  )
 		: questions;
 	return (

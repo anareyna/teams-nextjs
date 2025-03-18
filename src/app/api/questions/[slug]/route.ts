@@ -15,6 +15,8 @@ export async function GET(
 			.select({
 				questionIds: sharedQuestionsTable.questionIds,
 				mode: sharedQuestionsTable.mode,
+				guestId: sharedQuestionsTable.guestId,
+				flippedCards: sharedQuestionsTable.flippedCards,
 			})
 			.from(sharedQuestionsTable)
 			.where(eq(sharedQuestionsTable.slug, slug))
@@ -28,10 +30,13 @@ export async function GET(
 			);
 		}
 
-		const { questionIds, mode } = sharedQuestions[0] as {
-			questionIds: string[];
-			mode: QuestionMode;
-		};
+		const { questionIds, mode, guestId, flippedCards } =
+			sharedQuestions[0] as {
+				questionIds: string[];
+				mode: QuestionMode;
+				guestId: string;
+				flippedCards: number[];
+			};
 
 		const questions = await db
 			.select({
@@ -49,6 +54,8 @@ export async function GET(
 		return NextResponse.json({
 			questions: orderedQuestions,
 			mode,
+			hostId: guestId,
+			flippedCards: flippedCards || [],
 		});
 	} catch (error) {
 		console.error("Error in GET request:", error);

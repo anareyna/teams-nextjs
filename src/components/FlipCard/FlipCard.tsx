@@ -1,22 +1,44 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CardProps } from "@/types/types";
+import { FlipCardProps } from "@/types/types";
 import { Loader2, MessageCircleQuestion } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-export default function FlipCard({ text, index, isLoading }: CardProps) {
-	const [isFlipped, setIsFlipped] = useState(false);
+export default function FlipCard({
+	text,
+	index,
+	isLoading,
+	isFlipped = false,
+	onClick,
+	className,
+}: FlipCardProps) {
+	const [internalIsFlipped, setInternalIsFlipped] = useState(isFlipped);
+
+	const handleClick = () => {
+		if (isLoading) return;
+
+		if (onClick) {
+			onClick();
+		} else {
+			setInternalIsFlipped(!internalIsFlipped);
+		}
+	};
+
+	const isCardFlipped = onClick ? isFlipped : internalIsFlipped;
 
 	return (
 		<motion.div
-			className={`relative cursor-pointer ${
-				isLoading ? "pointer-events-none" : ""
-			}`}
-			onClick={() => setIsFlipped(!isFlipped)}
+			className={`relative ${
+				isLoading ? "pointer-events-none" : "cursor-pointer"
+			} ${className}`}
+			onClick={handleClick}
 			initial={false}
-			animate={{ rotateY: isFlipped ? 180 : 0 }}
+			animate={{
+				rotateY: isCardFlipped ? 180 : 0,
+			}}
+			data-testid="flip-card"
 			transition={{ duration: 0.6 }}
 			style={{ transformStyle: "preserve-3d", display: "inline-block" }}
 			role="listitem"
@@ -50,9 +72,13 @@ export default function FlipCard({ text, index, isLoading }: CardProps) {
 			>
 				<Card className="flex justify-center items-center p-8 min-h-[150px] sm:min-h-[250px] dark:bg-card-foreground dark:text-primary">
 					<CardContent className="text-center sm:text-xl p-0">
-						<p className="tracking-tight sm:text-xl font-semibold">
-							{text}
-						</p>
+						{isLoading ? (
+							<Loader2 className="animate-spin h-12 w-12 opacity-80" />
+						) : (
+							<p className="tracking-tight sm:text-xl font-semibold">
+								{text}
+							</p>
+						)}
 					</CardContent>
 				</Card>
 			</motion.div>

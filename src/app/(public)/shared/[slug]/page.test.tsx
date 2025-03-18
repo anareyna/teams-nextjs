@@ -9,6 +9,15 @@ vi.mock("next/navigation", () => ({
 	notFound: vi.fn(),
 }));
 
+vi.mock("@/lib/pusher", () => ({
+	pusherClient: {
+		subscribe: vi.fn(() => ({
+			bind: vi.fn(),
+		})),
+		unsubscribe: vi.fn(),
+	},
+}));
+
 vi.mock("@/components/ListCardGrid/ListCardGrid", () => ({
 	default: vi.fn(({ questions }) => (
 		<div data-testid="list-card-grid">

@@ -1,26 +1,53 @@
-import { getOrCreateGuestId } from "@/lib/guestId";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { getCookie, setCookie } from "cookies-next";
+import { NextRequest } from "next/server";
+import { beforeEach, describe, expect, it, Mock, vi } from "vitest";
 import { GET } from "./route";
 
-vi.mock("@/lib/guestId", () => ({
-	getOrCreateGuestId: vi.fn(),
+vi.mock("cookies-next", () => ({
+	getCookie: vi.fn(),
+	setCookie: vi.fn(),
 }));
 
-describe("GET /api/guestId", () => {
+vi.stubGlobal("crypto", {
+	randomUUID: vi.fn(() => "mocked-uuid"),
+});
+
+describe("GET /api/guest-id", () => {
 	beforeEach(() => {
-		vi.restoreAllMocks();
+		vi.clearAllMocks();
 	});
 
-	it("should return a guest ID", async () => {
-		const mockGuestId = "test-guest-id-123";
-		vi.mocked(getOrCreateGuestId).mockResolvedValue(mockGuestId);
+	it("should create a new guestId if it does not exist", async () => {
+		(getCookie as Mock).mockReturnValueOnce(undefined);
 
-		const response = await GET();
+		const req = {
+			cookies: new Map(),
+		} as unknown as NextRequest;
 
-		expect(getOrCreateGuestId).toHaveBeenCalled();
-		expect(response.status).toBe(200);
+		const response = await GET(req);
 
-		const json = await response.json();
-		expect(json).toEqual({ guestId: mockGuestId });
+		expect(setCookie).toHaveBeenCalledWith(
+			"guestId",
+			"mocked-uuid",
+			expect.objectContaining({ req })
+		);
+
+		const data = await response.json();
+		expect(data.guestId).toBe("mocked-uuid");
+	});
+
+	it("should return the existing guestId if it already exists", async () => {
+		(getCookie as Mock).mockReturnValueOnce("existing-guest-id");
+
+		const req = {
+			cookies: new Map([["guestId", "existing-guest-id"]]),
+		} as unknown as NextRequest;
+
+		const response = await GET(req);
+
+		expect(setCookie).not.toHaveBeenCalled();
+
+		const data = await response.json();
+		expect(data.guestId).toBe("existing-guest-id");
 	});
 });

@@ -24,6 +24,21 @@ export type ListCardGridProps = {
 };
 
 export type FlipCardGridProps = {
-	questions: Question[];
 	isLoading?: boolean;
+	questions: Question[];
+};
+
+export type FlipCardGridSharedProps = FlipCardGridProps & {
+	isHost?: boolean;
+	slug?: string;
+	initialFlippedCards?: number[];
+};
+
+export type FlipCardProps = {
+	text: string;
+	index: number;
+	isLoading?: boolean;
+	isFlipped?: boolean;
+	onClick?: () => void;
+	className?: string;
 };

@@ -56,7 +56,6 @@ export default function QuestionsClient({
 	};
 
 	const handleShareButtonClick = async () => {
-		console.log("click");
 		setIsShareLoading(true);
 		const questionIds = questions.map((q) => q.id);
 		const slug = await generateSharedUrl(questionIds, mode, guestId ?? "");
