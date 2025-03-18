@@ -29,13 +29,6 @@ export default async function SharedPage({
 			<h1 className="heading-primary">
 				{isHost ? "Host" : "Guest"}, You're In! 🎉
 			</h1>
-			<pre>
-				host: {hostId} - {typeof hostId}
-			</pre>
-			<pre>
-				guest: {guestId} - {typeof guestId}
-			</pre>
-			<pre>isHost: {isHost}</pre>
 			<div className="mb-6 flex flex-wrap gap-x-4 gap-y-2 items-center">
 				<p className="sm:text-lg ">
 					Copy this link to share with others:
