@@ -38,7 +38,7 @@ export default function Home() {
 						Choose Your Space:
 					</h2>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-10 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-10 my-6">
 						{QUESTION_CATEGORIES.map((category) => (
 							<Card
 								key={category.id}
@@ -81,7 +81,7 @@ export default function Home() {
 					</h2>
 					<p className="text-lg">Select a mode:</p>
 
-					<div className="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-10 my-6">
+					<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-10 my-6">
 						<Card
 							className="flex flex-col cursor-pointer hover:scale-[1.05] transition-all"
 							onClick={() => {
@@ -121,8 +121,7 @@ export default function Home() {
 							<CardContent>
 								<p className="sm:text-lg">
 									Questions stay hidden until revealed by the
-									host. Choose how many questions to include
-									and uncover them together during the
+									host. Uncover them together during the
 									session!
 								</p>
 								<div className="flex justify-end mt-6">
