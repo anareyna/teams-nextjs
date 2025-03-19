@@ -28,8 +28,10 @@ export type FlipCardGridProps = {
 	questions: Question[];
 };
 
+type ViewerType = "host" | "guest";
+
 export type FlipCardGridSharedProps = FlipCardGridProps & {
-	isHost?: boolean;
+	viewer?: ViewerType;
 	slug?: string;
 	initialFlippedCards?: number[];
 };
@@ -41,4 +43,5 @@ export type FlipCardProps = {
 	isFlipped?: boolean;
 	onClick?: () => void;
 	className?: string;
+	viewer?: ViewerType;
 };

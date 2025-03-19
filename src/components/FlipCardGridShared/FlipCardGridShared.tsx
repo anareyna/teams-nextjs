@@ -9,7 +9,7 @@ import FlipCard from "../FlipCard/FlipCard";
 export default function FlipCardGridShared({
 	isLoading: initialLoading,
 	questions,
-	isHost,
+	viewer,
 	slug,
 	initialFlippedCards = [],
 }: FlipCardGridSharedProps) {
@@ -42,7 +42,7 @@ export default function FlipCardGridShared({
 	}, [slug]);
 
 	const handleCardFlip = async (index: number) => {
-		if (!isHost) return;
+		if (viewer === "guest") return;
 
 		setLoadingCards((current) => [...current, index]);
 
@@ -88,7 +88,7 @@ export default function FlipCardGridShared({
 					isLoading={initialLoading || loadingCards.includes(i)}
 					isFlipped={flippedCards.includes(i)}
 					onClick={() => handleCardFlip(i)}
-					className={isHost ? "cursor-pointer" : "cursor-not-allowed"}
+					viewer={viewer}
 				/>
 			))}
 		</div>

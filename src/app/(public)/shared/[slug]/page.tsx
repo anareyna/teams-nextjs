@@ -62,7 +62,7 @@ export default async function SharedPage({
 			{mode === "mystery" ? (
 				<FlipCardGridShared
 					questions={questions}
-					isHost={isHost}
+					viewer={isHost ? "host" : "guest"}
 					slug={slug}
 					initialFlippedCards={flippedCards || []}
 				/>

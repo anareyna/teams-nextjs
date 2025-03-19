@@ -13,6 +13,7 @@ export default function FlipCard({
 	isFlipped = false,
 	onClick,
 	className,
+	viewer,
 }: FlipCardProps) {
 	const [internalIsFlipped, setInternalIsFlipped] = useState(isFlipped);
 
@@ -31,8 +32,10 @@ export default function FlipCard({
 	return (
 		<motion.div
 			className={`relative ${
-				isLoading ? "pointer-events-none" : "cursor-pointer"
-			} ${className}`}
+				isLoading || viewer === "guest"
+					? "cursor-not-allowed"
+					: "cursor-pointer"
+			}  ${className}`}
 			onClick={handleClick}
 			initial={false}
 			animate={{
