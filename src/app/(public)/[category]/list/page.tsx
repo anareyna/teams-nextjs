@@ -22,7 +22,15 @@ export default async function ListPage({
 
 	return (
 		<div>
-			<h1 className="heading-primary">{categoryData.title}</h1>
+			<h1 className="heading-primary">
+				{categoryData.title} - List mode
+			</h1>
+			<p className="mb-10 bg-orange-800 p-4 rounded-md">
+				<strong className="sm:text-lg">Host Preview:</strong>
+				<br /> As the host, you can adjust the number of questions or
+				get new ones. Once you're happy with your selection, click{" "}
+				<strong>"Share this list"</strong> to send it to others.
+			</p>
 			<QuestionsClient mode="list" categoryId={categoryData.id} />
 		</div>
 	);
